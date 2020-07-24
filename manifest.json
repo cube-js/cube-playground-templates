@@ -1,0 +1,75 @@
+{
+  "packages": [
+    {
+      "name": "create-react-app",
+      "version": "0.0.1",
+      "installsTo": null,
+      "receives": {
+        "react-ui-framework": "0.0.1"
+      }
+    },
+    {
+      "name": "react-antd-dynamic",
+      "version": "0.0.1",
+      "installsTo": {
+        "react-ui-framework": "0.0.1"
+      },
+      "receives": {
+        "react-chart": "0.0.1",
+        "react-table": "0.0.1",
+        "credentials": "0.0.1",
+        "react-transport": "0.0.1"
+      }
+    },
+    {
+      "name": "recharts",
+      "version": "0.0.1",
+      "installsTo": {
+        "react-chart": "0.0.1"
+      }
+    },
+    {
+      "name": "antd-tables",
+      "version": "0.0.1",
+      "installsTo": {
+        "react-table": "0.0.1"
+      }
+    },
+    {
+      "name": "react-credentials",
+      "version": "0.0.1",
+      "installsTo": {
+        "credentials": "0.0.1"
+      }
+    },
+    {
+      "name": "cool-react-credentials",
+      "version": "0.0.1",
+      "installsTo": {
+        "credentials": "0.0.1"
+      }
+    },
+    {
+      "name": "react-web-socket-transport",
+      "version": "0.0.1",
+      "installsTo": {
+        "react-transport": "0.0.1"
+      }
+    }
+  ],
+  "templates": [
+    {
+      "name": "Dynamic Dashboard with React, AntD, and Recharts",
+      "description": "Use this template to create a dynamic dashboard application with React, AntD, and Chart.js. It comes with a dynamic query builder and Apollo GraphQL client. Use it when you want to allow users to edit dashboards.",
+      "coverUrl": "https://cube.dev/downloads/template-react-dashboard.png",
+      "templatePackages": [
+        "create-react-app",
+        "react-antd-dynamic",
+        "react-credentials",
+        "recharts",
+        "antd-tables"
+      ],
+      "version": "0.0.1"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@cubejs-playground/core",
+  "version": "0.0.1",
+  "author": "Cube Dev, Inc.",
+  "dependencies": {
+    "@babel/generator": "^7.10.5",
+    "@babel/parser": "^7.10.5",
+    "@babel/traverse": "^7.10.5",
+    "@babel/types": "^7.10.5",
+    "fs-extra": "^9.0.1",
+    "semver": "^7.3.2"
+  }
+}
