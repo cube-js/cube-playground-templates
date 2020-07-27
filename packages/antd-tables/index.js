@@ -1,14 +1,11 @@
 const {
   TemplatePackage,
   ChartRendererSnippet,
-} = require('@cubejs-playground/core');
+} = require("../../templates-core");
 
 class AntdTablesTemplate extends TemplatePackage {}
 
 module.exports = (context) =>
-  new AntdTablesTemplate({
-    ...context,
-    fileToSnippet: {
-      '/src/components/ChartRenderer.js': new ChartRendererSnippet(),
-    },
+  new AntdTablesTemplate(context, {
+    '/src/components/ChartRenderer.js': new ChartRendererSnippet(),
   });

@@ -1,7 +1,7 @@
 const {
   TemplatePackage,
   CredentialsSnippet,
-} = require('@cubejs-playground/core');
+} = require('../../templates-core');
 
 class AppCredentialsTemplate extends TemplatePackage {}
 
@@ -10,12 +10,9 @@ module.exports = (context) => {
     throw new Error('"playgroundContext" is required');
   }
 
-  return new AppCredentialsTemplate({
-    ...context,
-    fileToSnippet: {
-      '/src/App.js': new CredentialsSnippet(
-        context.playgroundContext.credentials
-      ),
-    },
+  return new AppCredentialsTemplate(context, {
+    '/src/App.js': new CredentialsSnippet(
+      context.playgroundContext.credentials
+    ),
   });
 };

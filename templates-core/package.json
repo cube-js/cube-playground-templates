@@ -1,7 +1,8 @@
 {
-  "name": "@cubejs-playground/core",
+  "name": "../../templates-core",
   "version": "0.0.1",
   "author": "Cube Dev, Inc.",
+  "license": "MIT",
   "dependencies": {
     "@babel/generator": "^7.10.5",
     "@babel/parser": "^7.10.5",

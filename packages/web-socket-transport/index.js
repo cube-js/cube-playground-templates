@@ -1,4 +1,4 @@
-const { TemplatePackage } = require('@cubejs-playground/core');
+const { TemplatePackage } = require('../../templates-core');
 
 class WebSocketTransportTemplate extends TemplatePackage {}
 

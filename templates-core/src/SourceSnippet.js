@@ -2,7 +2,6 @@ const { parse } = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
 const t = require('@babel/types');
 const generator = require('@babel/generator').default;
-const TargetSource = require('./TargetSource');
 
 class SourceSnippet {
   constructor(source = null, historySnippets = []) {
@@ -20,6 +19,7 @@ class SourceSnippet {
     if (!source) {
       throw new Error('Empty source is provided');
     }
+    
     this.sourceValue = source;
     this.ast = SourceSnippet.parse(source);
   }
@@ -105,15 +105,24 @@ class SourceSnippet {
     } else {
       path = path.node;
     }
-    return TargetSource.formatCode(
-      generator(
-        t.program([path]),
-        {
-          comments: comments != null ? comments : true,
-        },
-        this.sourceValue
-      ).code
-    );
+    // todo: formatter
+
+    return generator(
+      t.program([path]),
+      {
+        comments: comments != null ? comments : true,
+      },
+      this.sourceValue
+    ).code;
+    // return TargetSource.formatCode(
+    //   generator(
+    //     t.program([path]),
+    //     {
+    //       comments: comments != null ? comments : true,
+    //     },
+    //     this.sourceValue
+    //   ).code
+    // );
   }
 
   compareDefinitions(a, b) {

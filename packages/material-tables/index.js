@@ -3,9 +3,9 @@ const {
   ChartRendererSnippet,
 } = require('../../templates-core');
 
-class BizchartTemplate extends TemplatePackage {}
+class MaterialTablesTemplate extends TemplatePackage {}
 
 module.exports = (context) =>
-  new BizchartTemplate(context, {
+  new MaterialTablesTemplate(context, {
     '/src/components/ChartRenderer.js': new ChartRendererSnippet(),
   });

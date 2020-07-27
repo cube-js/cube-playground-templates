@@ -1,14 +1,11 @@
 const {
   TemplatePackage,
   ChartRendererSnippet,
-} = require('@cubejs-playground/core');
+} = require('../../templates-core');
 
 class RechartsTemplate extends TemplatePackage {}
 
 module.exports = (context) =>
-  new RechartsTemplate({
-    ...context,
-    fileToSnippet: {
-      '/src/components/ChartRenderer.js': new ChartRendererSnippet(),
-    },
+  new RechartsTemplate(context, {
+    '/src/components/ChartRenderer.js': new ChartRendererSnippet(),
   });

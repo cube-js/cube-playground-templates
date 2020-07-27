@@ -14,23 +14,22 @@ class TemplatePackage {
     return semver.gt(verA, verB) || verA === verB;
   }
 
-  constructor({ appContainer, ...meta }) {
+  constructor({ appContainer, ...meta }, fileToSnippet = {}) {
     this.appContainer = appContainer;
     const {
       name,
       version,
       scaffoldingPath,
       receives,
-      fileToSnippet = {},
     } = meta.package;
-
+    
     this.name = name;
     this.version = version;
-    this.fileToSnippet = fileToSnippet;
     this.scaffoldingPath = scaffoldingPath;
     this.receives = receives;
     this.multiPackage = false;
     this.children = [];
+    this.fileToSnippet = fileToSnippet;
   }
 
   async initSources() {
@@ -105,8 +104,6 @@ class TemplatePackage {
   async applyPackage(sourceContainer) {
     await this.onBeforeApply();
     await this.initSources();
-
-    console.log('>>>>', this.name, 'this.children', this.children.length);
 
     const packageVersions = this.appContainer.getPackageVersions();
     if (this.multiPackage || packageVersions[this.name] !== this.version) {

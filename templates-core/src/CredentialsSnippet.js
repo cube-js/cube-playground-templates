@@ -5,14 +5,11 @@ class CredentialsSnippet extends SourceSnippet {
   constructor({ apiUrl, cubejsToken }) {
     super();
     
-    console.log('..CredentialsSnippet..', { apiUrl, cubejsToken })
-    
     this.apiUrl = apiUrl;
     this.cubejsToken = cubejsToken;
   }
 
   mergeTo(targetSource) {
-    console.log('targetSource', targetSource)
     super.mergeTo(targetSource);
     this.replaceTokens(targetSource);
   }

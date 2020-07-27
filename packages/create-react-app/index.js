@@ -1,4 +1,4 @@
-const { TemplatePackage } = require('@cubejs-playground/core');
+const { TemplatePackage } = require('../../templates-core');
 
 class CreateReactAppTemplate extends TemplatePackage {
   async onBeforeApply() {
