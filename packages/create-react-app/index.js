@@ -3,7 +3,7 @@ const { TemplatePackage } = require('../../templates-core');
 class CreateReactAppTemplate extends TemplatePackage {
   async onBeforeApply() {
     await this.appContainer
-      .executeCommand('npx', ['create-react-app', this.appContainer.appPath])
+      .executeCommand('npx', ['create-react-app', this.appContainer.appPath, '--use-npm'])
       .catch((e) => {
         if (e.toString().indexOf('ENOENT') !== -1) {
           throw new Error(
