@@ -1,6 +1,7 @@
 import './body.css';
 import 'antd/dist/antd.css';
 import React from 'react';
+import '@ant-design/compatible';
 import { Layout } from 'antd';
 import cubejs from '@cubejs-client/core';
 import { CubeProvider } from '@cubejs-client/react';
