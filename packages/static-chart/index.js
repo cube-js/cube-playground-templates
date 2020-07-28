@@ -1,16 +1,15 @@
-const TemplatePackage = require('../../TemplatePackage');
-const ChartSnippet = require('../../ChartSnippet');
+const { TemplatePackage, ChartSnippet } = require('../../templates-core');
 
-class StaticChartTemplate extends TemplatePackage {
-  constructor({ chartCode }) {
-    super({
-      name: 'static-chart',
-      fileToSnippet: {
-        '/src/pages/DashboardPage.js': new ChartSnippet(chartCode),
-      },
-      multiPackage: true,
-    });
+class StaticChartTemplate extends TemplatePackage {}
+
+module.exports = (context) => {
+  const { chartCode } = context.playgroundContext;
+  
+  if (!chartCode) {
+    throw new Error(`playgroundContext misses required chartCode`);
   }
-}
 
-module.exports = StaticChartTemplate;
+  return new StaticChartTemplate(context, {
+    '/src/pages/DashboardPage.js': new ChartSnippet(chartCode),
+  });
+};

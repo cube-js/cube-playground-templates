@@ -62,6 +62,13 @@
       }
     },
     {
+      "name": "static-chart",
+      "version": "0.0.1",
+      "installsTo": {
+        "react-chart": "0.0.1"
+      }
+    },
+    {
       "name": "antd-tables",
       "version": "0.0.1",
       "installsTo": {
