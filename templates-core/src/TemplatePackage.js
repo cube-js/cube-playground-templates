@@ -119,8 +119,10 @@ class TemplatePackage {
   }
 
   async applyChildren(sourceContainer) {
-    for (let index = 0; index < this.children.length; index++) {
-      await this.children[index].applyPackage(sourceContainer);
+    for (const [, instances] of Object.entries(this.children)) {
+      for (const instance of instances) {
+        await instance.applyPackage(sourceContainer);  
+      }
     }
   }
 }

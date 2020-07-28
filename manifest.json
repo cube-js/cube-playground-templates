@@ -83,13 +83,6 @@
       }
     },
     {
-      "name": "cool-react-credentials",
-      "version": "0.0.1",
-      "installsTo": {
-        "credentials": "0.0.1"
-      }
-    },
-    {
       "name": "react-web-socket-transport",
       "version": "0.0.1",
       "installsTo": {
