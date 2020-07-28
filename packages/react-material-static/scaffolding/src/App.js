@@ -1,7 +1,6 @@
 import './body.css';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import { Layout } from 'antd';
 import cubejs from '@cubejs-client/core';
 import { CubeProvider } from '@cubejs-client/react';
 import Header from './components/Header';
