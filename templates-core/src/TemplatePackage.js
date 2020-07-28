@@ -21,13 +21,14 @@ class TemplatePackage {
       version,
       scaffoldingPath,
       receives,
+      multiPackage = false
     } = meta.package;
     
     this.name = name;
     this.version = version;
     this.scaffoldingPath = scaffoldingPath;
     this.receives = receives;
-    this.multiPackage = false;
+    this.multiPackage = multiPackage;
     this.children = [];
     this.fileToSnippet = fileToSnippet;
   }

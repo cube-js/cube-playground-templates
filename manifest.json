@@ -64,6 +64,7 @@
     {
       "name": "static-chart",
       "version": "0.0.1",
+      "multiPackage": true,
       "installsTo": {
         "react-chart": "0.0.1"
       }
