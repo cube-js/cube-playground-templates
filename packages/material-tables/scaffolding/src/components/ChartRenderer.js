@@ -1,4 +1,4 @@
-import Typography from '@material-ui/core/Typography';
+import Typography from "@material-ui/core/Typography";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -10,19 +10,17 @@ const TypeToChartComponent = {
     <Typography
       variant="h4"
       style={{
-        textAlign: 'center'
+        textAlign: 'center',
       }}
     >
-      {resultSet.seriesNames().map(s => (
-        resultSet.totalRow()[s.key]
-      ))}
+      {resultSet.seriesNames().map((s) => resultSet.totalRow()[s.key])}
     </Typography>
   ),
   table: ({ resultSet }) => (
     <Table aria-label="simple table">
       <TableHead>
         <TableRow>
-          {resultSet.tableColumns().map(c => (
+          {resultSet.tableColumns().map((c) => (
             <TableCell key={c.key}>{c.title}</TableCell>
           ))}
         </TableRow>
@@ -30,12 +28,12 @@ const TypeToChartComponent = {
       <TableBody>
         {resultSet.tablePivot().map((row, index) => (
           <TableRow key={index}>
-            {resultSet.tableColumns().map(c => (
+            {resultSet.tableColumns().map((c) => (
               <TableCell key={c.key}>{row[c.key]}</TableCell>
             ))}
           </TableRow>
         ))}
       </TableBody>
     </Table>
-  )
+  ),
 };

@@ -4,10 +4,10 @@ const {
   IndexSnippet,
 } = require('../../templates-core');
 
-class ReactMaterialStaticTemplate extends TemplatePackage {}
+class ReactAntdStaticTemplate extends TemplatePackage {}
 
 module.exports = (context) =>
-  new ReactMaterialStaticTemplate(context, {
+  new ReactAntdStaticTemplate(context, {
     '/src/App.js': new AppSnippet(),
     '/src/index.js': new IndexSnippet(),
   });

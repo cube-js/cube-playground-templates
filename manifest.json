@@ -22,6 +22,19 @@
       }
     },
     {
+      "name": "react-antd-static",
+      "version": "0.0.1",
+      "installsTo": {
+        "react-ui-framework": "0.0.1"
+      },
+      "receives": {
+        "react-chart": "0.0.1",
+        "react-table": "0.0.1",
+        "credentials": "0.0.1",
+        "react-transport": "0.0.1"
+      }
+    },
+    {
       "name": "react-material-static",
       "version": "0.0.1",
       "installsTo": {
@@ -36,6 +49,13 @@
     },
     {
       "name": "recharts",
+      "version": "0.0.1",
+      "installsTo": {
+        "react-chart": "0.0.1"
+      }
+    },
+    {
+      "name": "d3-charts",
       "version": "0.0.1",
       "installsTo": {
         "react-chart": "0.0.1"
@@ -111,7 +131,7 @@
       "templatePackages": [
         "create-react-app",
         "react-material-static",
-        "recharts-charts",
+        "recharts",
         "material-tables",
         "react-credentials"
       ]

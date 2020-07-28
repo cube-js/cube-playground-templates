@@ -1,6 +1,5 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import { Col } from 'antd';
 import ChartRenderer from '../components/ChartRenderer';
 import Dashboard from '../components/Dashboard';
 import DashboardItem from '../components/DashboardItem';
@@ -9,11 +8,11 @@ const DashboardItems = [];
 
 const DashboardPage = () => {
   const dashboardItem = (item) => (
-    <Grid item xs={12} lg={6} key={item.id}>
+    <Col span={24} lg={12} key={item.id} style={{ marginBottom: '24px' }}>
       <DashboardItem title={item.name}>
         <ChartRenderer vizState={item.vizState} />
       </DashboardItem>
-    </Grid>
+    </Col>
   );
 
   const Empty = () => (
@@ -23,14 +22,16 @@ const DashboardPage = () => {
         padding: 12,
       }}
     >
-      <Typography variant="h5" color="inherit">
+      <h2>
         There are no charts on this dashboard. Use Playground Build to add one.
-      </Typography>
+      </h2>
     </div>
   );
 
   return DashboardItems.length ? (
-    <Dashboard>{DashboardItems.map(dashboardItem)}</Dashboard>
+    <Dashboard dashboardItems={DashboardItems}>
+      {DashboardItems.map(dashboardItem)}
+    </Dashboard>
   ) : (
     <Empty />
   );
