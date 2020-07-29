@@ -62,6 +62,20 @@
       }
     },
     {
+      "name": "chartjs-charts",
+      "version": "0.0.1",
+      "installsTo": {
+        "react-chart": "0.0.1"
+      }
+    },
+    {
+      "name": "bizcharts-charts",
+      "version": "0.0.1",
+      "installsTo": {
+        "react-chart": "0.0.1"
+      }
+    },
+    {
       "name": "static-chart",
       "version": "0.0.1",
       "multiPackage": true,
