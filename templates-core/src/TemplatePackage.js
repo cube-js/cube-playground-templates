@@ -3,6 +3,8 @@ const semver = require('semver');
 
 const SourceSnippet = require('./SourceSnippet');
 const CssSourceSnippet = require('./CssSourceSnippet');
+const CssTargetSource = require('./CssTargetSource');
+const TargetSource = require('./TargetSource');
 const { fileContentsRecursive } = require('./utils');
 
 const versionRegex = /\.([0-9-]+)\.(\w+)$/;
@@ -21,9 +23,9 @@ class TemplatePackage {
       version,
       scaffoldingPath,
       receives,
-      multiPackage = false
+      multiPackage = false,
     } = meta.package;
-    
+
     this.name = name;
     this.version = version;
     this.scaffoldingPath = scaffoldingPath;
@@ -77,22 +79,40 @@ class TemplatePackage {
             );
             const lastVersionFile = files[files.length - 1];
 
-            sourceContainer.mergeSnippetToFile(
+            let targetSource = sourceContainer.getTargetSource(scaffoldingFile);
+
+            if (!targetSource) {
+              targetSource = this.createTargetSource(
+                scaffoldingFile,
+                this.templateSources[lastVersionFile]
+              );
+              sourceContainer.addTargetSource(scaffoldingFile, targetSource);
+            }
+
+            const snippet =
               this.fileToSnippet[scaffoldingFile] ||
-                this.createSourceSnippet(
-                  scaffoldingFile,
-                  this.templateSources[lastVersionFile],
-                  historySnippets
-                ),
-              scaffoldingFile,
-              this.templateSources[lastVersionFile]
-            );
+              this.createSourceSnippet(
+                scaffoldingFile,
+                this.templateSources[lastVersionFile],
+                historySnippets
+              );
+
+            snippet.mergeTo(targetSource);
+            sourceContainer.add(scaffoldingFile, targetSource.formattedCode());
           }
         );
       });
   }
 
-  createSourceSnippet(fileName, source, historySnippets) {
+  createTargetSource(fileName, content) {
+    if (fileName.match(/\.css$/)) {
+      return new CssTargetSource(fileName, content);
+    } else {
+      return new TargetSource(fileName, content);
+    }
+  }
+
+  createSourceSnippet(fileName, source, historySnippets = []) {
     if (fileName.match(/\.css$/)) {
       return new CssSourceSnippet(source);
     } else {
@@ -122,7 +142,7 @@ class TemplatePackage {
   async applyChildren(sourceContainer) {
     for (const [, instances] of Object.entries(this.children)) {
       for (const instance of instances) {
-        await instance.applyPackage(sourceContainer);  
+        await instance.applyPackage(sourceContainer);
       }
     }
   }
