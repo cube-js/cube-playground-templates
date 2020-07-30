@@ -2,7 +2,7 @@ const {
   TemplatePackage,
   AppSnippet,
   IndexSnippet,
-} = require('../../templates-core');
+} = require('@cubejs-templates/core');
 
 class ReactAntdDynamicTemplate extends TemplatePackage {}
 

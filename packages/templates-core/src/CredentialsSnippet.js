@@ -4,7 +4,7 @@ const SourceSnippet = require('./SourceSnippet');
 class CredentialsSnippet extends SourceSnippet {
   constructor({ apiUrl, cubejsToken }) {
     super();
-    
+
     this.apiUrl = apiUrl;
     this.cubejsToken = cubejsToken;
   }

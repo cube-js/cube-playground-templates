@@ -11,9 +11,9 @@ async function fileContentsRecursive(dir, rootPath, includeNodeModules) {
   if (dir.indexOf('node_modules') !== -1 && !includeNodeModules) {
     return [];
   }
-  
+
   const files = fs.readdirSync(dir).filter((name) => !name.includes('.json'));
-  
+
   // const files = await fs.readdir(dir);
   return (
     await Promise.all(
@@ -29,11 +29,7 @@ async function fileContentsRecursive(dir, rootPath, includeNodeModules) {
             },
           ];
         } else {
-          return fileContentsRecursive(
-            fileName,
-            rootPath,
-            includeNodeModules
-          );
+          return fileContentsRecursive(fileName, rootPath, includeNodeModules);
         }
       })
     )
@@ -41,5 +37,5 @@ async function fileContentsRecursive(dir, rootPath, includeNodeModules) {
 }
 
 module.exports = {
-  fileContentsRecursive
-}
+  fileContentsRecursive,
+};

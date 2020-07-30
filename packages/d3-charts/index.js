@@ -1,7 +1,7 @@
 const {
   TemplatePackage,
-  ChartRendererSnippet
-} = require('../../templates-core');
+  ChartRendererSnippet,
+} = require('@cubejs-templates/core');
 
 class D3Template extends TemplatePackage {}
 
