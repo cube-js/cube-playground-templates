@@ -1,9 +1,9 @@
-const { TemplatePackage } = require('../../templates-core');
+const { TemplatePackage } = require('../templates-core');
 
 class CreateReactAppTemplate extends TemplatePackage {
   async onBeforeApply() {
     const isInstalled = this.appContainer.getPackageVersions()[this.name];
-    
+
     if (!isInstalled) {
       await this.appContainer
         .executeCommand('npx', [

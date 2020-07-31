@@ -8,5 +8,8 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
+  },
+  "dependencies": {
+    "@cubejs-templates/core": "^0.0.1"
   }
 }

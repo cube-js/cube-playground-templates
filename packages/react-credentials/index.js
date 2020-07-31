@@ -1,4 +1,7 @@
-const { TemplatePackage, CredentialsSnippet } = require('../../templates-core');
+const {
+  TemplatePackage,
+  CredentialsSnippet,
+} = require('@cubejs-templates/core');
 
 class AppCredentialsTemplate extends TemplatePackage {}
 

@@ -1,8 +1,12 @@
 const R = require('ramda');
 const semver = require('semver');
+const traverse = require('@babel/traverse').default;
+const { parse } = require('@babel/parser');
 
 const SourceSnippet = require('./SourceSnippet');
 const CssSourceSnippet = require('./CssSourceSnippet');
+const CssTargetSource = require('./CssTargetSource');
+const TargetSource = require('./TargetSource');
 const { fileContentsRecursive } = require('./utils');
 
 const versionRegex = /\.([0-9-]+)\.(\w+)$/;
@@ -21,9 +25,9 @@ class TemplatePackage {
       version,
       scaffoldingPath,
       receives,
-      multiPackage = false
+      multiPackage = false,
     } = meta.package;
-    
+
     this.name = name;
     this.version = version;
     this.scaffoldingPath = scaffoldingPath;
@@ -77,22 +81,40 @@ class TemplatePackage {
             );
             const lastVersionFile = files[files.length - 1];
 
-            sourceContainer.mergeSnippetToFile(
+            let targetSource = sourceContainer.getTargetSource(scaffoldingFile);
+
+            if (!targetSource) {
+              targetSource = this.createTargetSource(
+                scaffoldingFile,
+                this.templateSources[lastVersionFile]
+              );
+              sourceContainer.addTargetSource(scaffoldingFile, targetSource);
+            }
+
+            const snippet =
               this.fileToSnippet[scaffoldingFile] ||
-                this.createSourceSnippet(
-                  scaffoldingFile,
-                  this.templateSources[lastVersionFile],
-                  historySnippets
-                ),
-              scaffoldingFile,
-              this.templateSources[lastVersionFile]
-            );
+              this.createSourceSnippet(
+                scaffoldingFile,
+                this.templateSources[lastVersionFile],
+                historySnippets
+              );
+
+            snippet.mergeTo(targetSource);
+            sourceContainer.add(scaffoldingFile, targetSource.formattedCode());
           }
         );
       });
   }
 
-  createSourceSnippet(fileName, source, historySnippets) {
+  createTargetSource(fileName, content) {
+    if (fileName.match(/\.css$/)) {
+      return new CssTargetSource(fileName, content);
+    } else {
+      return new TargetSource(fileName, content);
+    }
+  }
+
+  createSourceSnippet(fileName, source, historySnippets = []) {
     if (fileName.match(/\.css$/)) {
       return new CssSourceSnippet(source);
     } else {
@@ -101,6 +123,10 @@ class TemplatePackage {
   }
 
   async onBeforeApply() {}
+
+  async onAfterApply(sourceContainer) {
+    sourceContainer.addImportDependencies(this.importDependencies());
+  }
 
   async applyPackage(sourceContainer) {
     await this.onBeforeApply();
@@ -116,15 +142,71 @@ class TemplatePackage {
       );
     }
 
+    await this.onAfterApply(sourceContainer);
     await this.applyChildren(sourceContainer);
   }
 
   async applyChildren(sourceContainer) {
     for (const [, instances] of Object.entries(this.children)) {
       for (const instance of instances) {
-        await instance.applyPackage(sourceContainer);  
+        await instance.applyPackage(sourceContainer);
       }
     }
+  }
+
+  importDependencies() {
+    const allImports = R.toPairs(this.templateSources)
+      .filter(([fileName]) => fileName.match(/\.js$/))
+      .map(([fileName, content]) => {
+        const imports = [];
+
+        const ast = parse(content, {
+          sourceFilename: fileName,
+          sourceType: 'module',
+          plugins: ['jsx'],
+        });
+
+        traverse(ast, {
+          ImportDeclaration(currentPath) {
+            imports.push(currentPath);
+          },
+        });
+        return imports;
+      })
+      .reduce((a, b) => a.concat(b), []);
+
+    const dependencies = allImports
+      .filter((i) => i.get('source').node.value.indexOf('.') !== 0)
+      .map((i) => {
+        const importName = i.get('source').node.value.split('/');
+        const dependency =
+          importName[0].indexOf('@') === 0
+            ? [importName[0], importName[1]].join('/')
+            : importName[0];
+        return this.withPeerDependencies(dependency);
+      })
+      .reduce((a, b) => ({ ...a, ...b }), {});
+
+    return dependencies || {};
+  }
+
+  withPeerDependencies(dependency) {
+    let result = {
+      [dependency]: 'latest',
+    };
+    if (dependency === 'graphql-tag') {
+      result = {
+        ...result,
+        graphql: 'latest',
+      };
+    }
+    if (dependency === 'react-chartjs-2') {
+      result = {
+        ...result,
+        'chart.js': 'latest',
+      };
+    }
+    return result;
   }
 }
 

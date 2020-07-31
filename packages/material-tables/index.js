@@ -1,7 +1,7 @@
 const {
   TemplatePackage,
   ChartRendererSnippet,
-} = require('../../templates-core');
+} = require('@cubejs-templates/core');
 
 class MaterialTablesTemplate extends TemplatePackage {}
 
