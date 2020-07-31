@@ -155,7 +155,7 @@ class TemplatePackage {
   }
 
   importDependencies() {
-    const allImports = R.toPairs(this.templateSources())
+    const allImports = R.toPairs(this.templateSources)
       .filter(([fileName]) => fileName.match(/\.js$/))
       .map(([fileName, content]) => {
         const imports = [];
@@ -173,7 +173,7 @@ class TemplatePackage {
         });
         return imports;
       })
-      .reduce((a, b) => a.concat(b));
+      .reduce((a, b) => a.concat(b), []);
 
     const dependencies = allImports
       .filter((i) => i.get('source').node.value.indexOf('.') !== 0)
@@ -185,7 +185,7 @@ class TemplatePackage {
             : importName[0];
         return this.withPeerDependencies(dependency);
       })
-      .reduce((a, b) => ({ ...a, ...b }));
+      .reduce((a, b) => ({ ...a, ...b }), {});
 
     return dependencies || {};
   }
