@@ -1,5 +1,7 @@
 const R = require('ramda');
 const semver = require('semver');
+const traverse = require('@babel/traverse').default;
+const { parse } = require('@babel/parser');
 
 const SourceSnippet = require('./SourceSnippet');
 const CssSourceSnippet = require('./CssSourceSnippet');
@@ -122,6 +124,10 @@ class TemplatePackage {
 
   async onBeforeApply() {}
 
+  async onAfterApply(sourceContainer) {
+    sourceContainer.addImportDependencies(this.importDependencies());
+  }
+
   async applyPackage(sourceContainer) {
     await this.onBeforeApply();
     await this.initSources();
@@ -136,6 +142,7 @@ class TemplatePackage {
       );
     }
 
+    await this.onAfterApply(sourceContainer);
     await this.applyChildren(sourceContainer);
   }
 
@@ -145,6 +152,61 @@ class TemplatePackage {
         await instance.applyPackage(sourceContainer);
       }
     }
+  }
+
+  importDependencies() {
+    const allImports = R.toPairs(this.templateSources())
+      .filter(([fileName]) => fileName.match(/\.js$/))
+      .map(([fileName, content]) => {
+        const imports = [];
+
+        const ast = parse(content, {
+          sourceFilename: fileName,
+          sourceType: 'module',
+          plugins: ['jsx'],
+        });
+
+        traverse(ast, {
+          ImportDeclaration(currentPath) {
+            imports.push(currentPath);
+          },
+        });
+        return imports;
+      })
+      .reduce((a, b) => a.concat(b));
+
+    const dependencies = allImports
+      .filter((i) => i.get('source').node.value.indexOf('.') !== 0)
+      .map((i) => {
+        const importName = i.get('source').node.value.split('/');
+        const dependency =
+          importName[0].indexOf('@') === 0
+            ? [importName[0], importName[1]].join('/')
+            : importName[0];
+        return this.withPeerDependencies(dependency);
+      })
+      .reduce((a, b) => ({ ...a, ...b }));
+
+    return dependencies || {};
+  }
+
+  withPeerDependencies(dependency) {
+    let result = {
+      [dependency]: 'latest',
+    };
+    if (dependency === 'graphql-tag') {
+      result = {
+        ...result,
+        graphql: 'latest',
+      };
+    }
+    if (dependency === 'react-chartjs-2') {
+      result = {
+        ...result,
+        'chart.js': 'latest',
+      };
+    }
+    return result;
   }
 }
 

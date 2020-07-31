@@ -4,7 +4,15 @@ const {
   IndexSnippet,
 } = require('@cubejs-templates/core');
 
-class ReactAntdDynamicTemplate extends TemplatePackage {}
+class ReactAntdDynamicTemplate extends TemplatePackage {
+  importDependencies() {
+    console.log('ReactAntdDynamicTemplate.importDependencies');
+    return {
+      ...super.importDependencies(),
+      'graphql-tools': '^5.0.0',
+    };
+  }
+}
 
 module.exports = (context) =>
   new ReactAntdDynamicTemplate(context, {
