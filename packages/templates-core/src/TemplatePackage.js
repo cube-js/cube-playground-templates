@@ -86,7 +86,8 @@ class TemplatePackage {
             if (!targetSource) {
               targetSource = this.createTargetSource(
                 scaffoldingFile,
-                this.templateSources[lastVersionFile]
+                sourceContainer.fileContent[scaffoldingFile] ||
+                  this.templateSources[lastVersionFile]
               );
               sourceContainer.addTargetSource(scaffoldingFile, targetSource);
             }
