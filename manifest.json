@@ -135,7 +135,7 @@
         "chartjs-charts",
         "antd-tables",
         "react-credentials",
-        "web-socket-transport"
+        "react-web-socket-transport"
       ],
       "coverUrl": "https://cube.dev/downloads/template-real-time-dashboard.png"
     },
