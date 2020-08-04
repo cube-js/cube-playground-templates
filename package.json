@@ -10,6 +10,6 @@
     }
   },
   "dependencies": {
-    "@cubejs-templates/core": "^0.0.1"
+    "@cubejs-templates/core": "latest"
   }
 }
