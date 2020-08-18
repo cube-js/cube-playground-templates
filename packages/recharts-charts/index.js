@@ -3,9 +3,9 @@ const {
   ChartRendererSnippet,
 } = require('@cubejs-templates/core');
 
-class RechartsTemplate extends TemplatePackage {}
+class RechartsChartsTemplate extends TemplatePackage {}
 
 module.exports = (context) =>
-  new RechartsTemplate(context, {
+  new RechartsChartsTemplate(context, {
     '/src/components/ChartRenderer.js': new ChartRendererSnippet(),
   });

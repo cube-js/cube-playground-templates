@@ -48,7 +48,7 @@
       }
     },
     {
-      "name": "recharts",
+      "name": "recharts-charts",
       "version": "0.0.1",
       "installsTo": {
         "react-chart": "0.0.1"
@@ -121,7 +121,7 @@
         "create-react-app",
         "react-antd-dynamic",
         "react-credentials",
-        "recharts",
+        "recharts-charts",
         "antd-tables"
       ],
       "version": "0.0.1"
@@ -146,7 +146,7 @@
       "templatePackages": [
         "create-react-app",
         "react-material-static",
-        "recharts",
+        "recharts-charts",
         "material-tables",
         "react-credentials"
       ]
