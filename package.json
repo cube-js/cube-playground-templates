@@ -1,4 +1,7 @@
 {
+  "description": "Cube.js Playground Templates",
+  "author": "Cube Dev, Inc.",
+  "license": "MIT",
   "devDependencies": {
     "husky": "^4.2.5",
     "prettier": "^2.0.5",
