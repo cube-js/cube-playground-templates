@@ -15,7 +15,7 @@ import { SettingsDialogComponent } from '../settings-dialog/settings-dialog.comp
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent implements OnInit {
+class DashboardComponent implements OnInit {
   query: Query;
   builderMeta: BuilderMeta;
   resultSet: ResultSet;
@@ -81,3 +81,5 @@ export class DashboardComponent implements OnInit {
     });
   }
 }
+
+export { DashboardComponent };

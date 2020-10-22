@@ -18,7 +18,7 @@ import { catchError, debounceTime, switchMap } from 'rxjs/operators';
   templateUrl: './query-renderer.component.html',
   styleUrls: ['./query-renderer.component.css'],
 })
-export class QueryRendererComponent implements OnInit {
+class QueryRendererComponent implements OnInit {
   resultSet: ResultSet;
   chartType: TChartType = 'line';
   isQueryPresent: boolean;
@@ -73,3 +73,5 @@ export class QueryRendererComponent implements OnInit {
       );
   }
 }
+
+export { QueryRendererComponent };

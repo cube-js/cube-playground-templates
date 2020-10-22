@@ -10,7 +10,7 @@ class QueryRendererSnippet extends SourceSnippet {
 
     traverse(this.ast, {
       ClassDeclaration(path) {
-        if (path.get('id').node.name === 'QueryRenderer') {
+        if (path.get('id').node.name === 'QueryRendererComponent') {
           traverse(
             path.node,
             {
@@ -31,7 +31,7 @@ class QueryRendererSnippet extends SourceSnippet {
 
     traverse(targetSource.ast, {
       ClassDeclaration(path) {
-        if (path.get('id').node.name === 'QueryRenderer') {
+        if (path.get('id').node.name === 'QueryRendererComponent') {
           properties.concat(methods).forEach(({ node }) => {
             path.get('body').unshiftContainer('body', node);
           });

@@ -11,24 +11,9 @@ class TargetSource {
       this.ast = parse(source, {
         sourceFilename: fileName,
         sourceType: 'module',
-        plugins: [
-          'jsx',
-          'typescript',
-          'classProperties',
-          'decorators-legacy',
-          // [
-          //   'decorators',
-          //   {
-          //     decoratorsBeforeExport: true,
-          //   },
-          // ],
-        ],
+        plugins: ['jsx', 'typescript', 'classProperties', 'decorators-legacy'],
       });
     } catch (e) {
-      console.log('------');
-      console.log(source);
-      console.log('------');
-
       throw new Error(`Can't parse ${fileName}: ${e.message}`);
     }
     this.findAllImports();

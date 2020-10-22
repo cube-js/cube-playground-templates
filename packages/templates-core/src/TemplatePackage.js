@@ -110,7 +110,6 @@ class TemplatePackage {
   }
 
   createTargetSource(fileName, content) {
-    console.log('fileName', fileName);
     if (fileName.match(/\.css$/)) {
       return new CssTargetSource(fileName, content);
     } else if (fileName.match(/\.html$/)) {

@@ -17,7 +17,7 @@ import { debounceTime } from 'rxjs/operators';
   templateUrl: './filter-group.component.html',
   styleUrls: ['./filter-group.component.css'],
 })
-export class FilterGroupComponent implements OnInit, OnDestroy {
+class FilterGroupComponent implements OnInit, OnDestroy {
   currentFilter = new BehaviorSubject<any>(null);
 
   @Input()
@@ -78,7 +78,7 @@ export class FilterGroupComponent implements OnInit, OnDestroy {
   templateUrl: './filter.component.html',
   styleUrls: ['./filter-group.component.css'],
 })
-export class FilterComponent implements OnInit {
+class FilterComponent implements OnInit {
   private _member: any;
 
   @Input()
@@ -117,3 +117,5 @@ export class FilterComponent implements OnInit {
     });
   }
 }
+
+export { FilterGroupComponent, FilterComponent };
