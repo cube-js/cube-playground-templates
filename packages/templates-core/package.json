@@ -14,9 +14,13 @@
   "dependencies": {
     "@babel/generator": "^7.10.5",
     "@babel/parser": "^7.10.5",
+    "@babel/preset-typescript": "^7.12.1",
     "@babel/traverse": "^7.10.5",
     "@babel/types": "^7.10.5",
     "fs-extra": "^9.0.1",
     "semver": "^7.3.2"
+  },
+  "devDependencies": {
+    "@types/babel-traverse": "^6.25.5"
   }
 }

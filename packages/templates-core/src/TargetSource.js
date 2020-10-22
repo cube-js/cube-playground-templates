@@ -11,9 +11,24 @@ class TargetSource {
       this.ast = parse(source, {
         sourceFilename: fileName,
         sourceType: 'module',
-        plugins: ['jsx'],
+        plugins: [
+          'jsx',
+          'typescript',
+          'classProperties',
+          'decorators-legacy',
+          // [
+          //   'decorators',
+          //   {
+          //     decoratorsBeforeExport: true,
+          //   },
+          // ],
+        ],
       });
     } catch (e) {
+      console.log('------');
+      console.log(source);
+      console.log('------');
+
       throw new Error(`Can't parse ${fileName}: ${e.message}`);
     }
     this.findAllImports();
@@ -65,10 +80,12 @@ class TargetSource {
   }
 
   static formatCode(code) {
-    return prettier.format(code, {
-      parser: 'babel',
-      singleQuote: true,
-    });
+    // todo: fix constructor properties
+    return code;
+    // return prettier.format(code, {
+    //   parser: 'babel',
+    //   singleQuote: true,
+    // });
   }
 }
 

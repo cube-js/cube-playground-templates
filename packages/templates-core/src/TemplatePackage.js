@@ -5,7 +5,9 @@ const { parse } = require('@babel/parser');
 
 const SourceSnippet = require('./SourceSnippet');
 const CssSourceSnippet = require('./CssSourceSnippet');
+const HtmlSourceSnippet = require('./HtmlSourceSnippet');
 const CssTargetSource = require('./CssTargetSource');
+const HtmlTargetSource = require('./HtmlTargetSource');
 const TargetSource = require('./TargetSource');
 const { fileContentsRecursive } = require('./utils');
 
@@ -108,15 +110,20 @@ class TemplatePackage {
   }
 
   createTargetSource(fileName, content) {
+    console.log('fileName', fileName);
     if (fileName.match(/\.css$/)) {
       return new CssTargetSource(fileName, content);
+    } else if (fileName.match(/\.html$/)) {
+      return new HtmlTargetSource(fileName, content);
     } else {
       return new TargetSource(fileName, content);
     }
   }
 
   createSourceSnippet(fileName, source, historySnippets = []) {
-    if (fileName.match(/\.css$/)) {
+    if (fileName.match(/\.html$/)) {
+      return new HtmlSourceSnippet(source);
+    } else if (fileName.match(/\.css$/)) {
       return new CssSourceSnippet(source);
     } else {
       return new SourceSnippet(source, historySnippets);

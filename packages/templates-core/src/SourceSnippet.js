@@ -30,7 +30,7 @@ class SourceSnippet {
     try {
       return parse(source, {
         sourceType: 'module',
-        plugins: ['jsx'],
+        plugins: ['jsx', 'typescript', 'classProperties', 'decorators-legacy'],
       });
     } catch (e) {
       throw new Error(`Can't parse source snippet: ${e.message}\n${source}`);
