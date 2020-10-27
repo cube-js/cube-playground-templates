@@ -1,47 +1,55 @@
-<div *ngIf="isQueryPresent" class="chart-wrapper">
-  <canvas
-    *ngIf="chartType === 'line'"
-    baseChart
-    legend="true"
-    chartType="line"
-    [datasets]="chartData"
-    [labels]="chartLabels"
-    [options]="noFillChartOptions"
-  >
-  </canvas>
+<ng-container *ngIf="isQueryPresent">
+  <mat-divider></mat-divider>
 
-  <canvas
-    *ngIf="chartType === 'area'"
-    baseChart
-    legend="true"
-    chartType="line"
-    [datasets]="chartData"
-    [labels]="chartLabels"
-    [options]="chartOptions"
-  >
-  </canvas>
+  <div class="action-button-wrapper">
+    <ng-content></ng-content>
+  </div>
 
-  <canvas
-    *ngIf="chartType === 'bar'"
-    baseChart
-    legend="true"
-    chartType="bar"
-    [datasets]="chartData"
-    [labels]="chartLabels"
-    [options]="chartOptions"
-  >
-  </canvas>
+  <div *ngIf="chartType !== 'table'" class="chart-container">
+    <canvas
+      *ngIf="chartType === 'line'"
+      baseChart
+      legend="true"
+      chartType="line"
+      [datasets]="chartData"
+      [labels]="chartLabels"
+      [options]="noFillChartOptions"
+    >
+    </canvas>
 
-  <canvas
-    *ngIf="chartType === 'pie'"
-    baseChart
-    legend="true"
-    chartType="pie"
-    [datasets]="chartData"
-    [labels]="chartLabels"
-    [options]="chartOptions"
-  >
-  </canvas>
+    <canvas
+      *ngIf="chartType === 'area'"
+      baseChart
+      legend="true"
+      chartType="line"
+      [datasets]="chartData"
+      [labels]="chartLabels"
+      [options]="chartOptions"
+    >
+    </canvas>
+
+    <canvas
+      *ngIf="chartType === 'bar'"
+      baseChart
+      legend="true"
+      chartType="bar"
+      [datasets]="chartData"
+      [labels]="chartLabels"
+      [options]="chartOptions"
+    >
+    </canvas>
+
+    <canvas
+      *ngIf="chartType === 'pie'"
+      baseChart
+      legend="true"
+      chartType="pie"
+      [datasets]="chartData"
+      [labels]="chartLabels"
+      [options]="chartOptions"
+    >
+    </canvas>
+  </div>
 
   <table
     *ngIf="chartType === 'table'"
@@ -62,4 +70,4 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
-</div>
+</ng-container>

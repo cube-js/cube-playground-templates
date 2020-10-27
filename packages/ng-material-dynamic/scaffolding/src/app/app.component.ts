@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-root',
   templateUrl: './app.component.html',
 })
-class AppComponent {}
-
-export { AppComponent };
+export class AppComponent {
+  constructor() {}
+}

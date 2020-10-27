@@ -6,7 +6,7 @@ import { MatSelectChange } from '@angular/material/select';
   templateUrl: './members-group.component.html',
   styleUrls: ['./members-group.component.css'],
 })
-class MembersGroupComponent {
+export class MembersGroupComponent {
   @Input()
   title: string;
 
@@ -40,5 +40,3 @@ class MembersGroupComponent {
     });
   }
 }
-
-export { MembersGroupComponent };
