@@ -104,6 +104,8 @@ const cubejsOptions = {
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {
+class AppModule {
   constructor() {}
 }
+
+export { AppModule };

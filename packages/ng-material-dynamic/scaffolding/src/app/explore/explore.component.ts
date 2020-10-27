@@ -17,7 +17,7 @@ import { AddToDashboardDialogComponent } from './add-to-dashboard-dialog/add-to-
   templateUrl: './explore.component.html',
   styleUrls: ['./explore.component.css'],
 })
-export class ExploreComponent implements OnInit {
+class ExploreComponent implements OnInit {
   itemId: number | null = null;
   query: Query;
   builderMeta: BuilderMeta;
@@ -114,3 +114,5 @@ export class ExploreComponent implements OnInit {
     });
   }
 }
+
+export { ExploreComponent };

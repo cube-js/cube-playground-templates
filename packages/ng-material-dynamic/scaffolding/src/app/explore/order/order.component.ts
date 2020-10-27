@@ -7,7 +7,7 @@ import type { Order, TOrder, TOrderMember } from '@cubejs-client/ngx';
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.css'],
 })
-export class OrderComponent implements OnInit {
+class OrderComponent implements OnInit {
   @Input()
   order: Order;
 
@@ -28,3 +28,5 @@ export class OrderComponent implements OnInit {
     this.order.setMemberOrder(orderMember.id, getNextOrder(orderMember.order));
   }
 }
+
+export { OrderComponent };

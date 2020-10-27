@@ -8,7 +8,7 @@ import type { PivotConfig } from '@cubejs-client/ngx';
   templateUrl: './pivot.component.html',
   styleUrls: ['./pivot.component.css'],
 })
-export class PivotComponent implements OnInit {
+class PivotComponent implements OnInit {
   @Input()
   pivotConfig: PivotConfig;
   x = [];
@@ -30,3 +30,5 @@ export class PivotComponent implements OnInit {
     );
   }
 }
+
+export { PivotComponent };

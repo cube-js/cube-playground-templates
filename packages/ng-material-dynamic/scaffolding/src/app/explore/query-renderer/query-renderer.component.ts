@@ -16,7 +16,7 @@ import { catchError, switchMap } from 'rxjs/operators';
   templateUrl: './query-renderer.component.html',
   styleUrls: ['./query-renderer.component.css'],
 })
-export class QueryRendererComponent implements OnInit {
+class QueryRendererComponent implements OnInit {
   data: any = {};
   isQueryPresent: boolean;
 
@@ -75,3 +75,5 @@ export class QueryRendererComponent implements OnInit {
     );
   }
 }
+
+export { QueryRendererComponent };

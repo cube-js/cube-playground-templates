@@ -19,7 +19,7 @@ import { flattenColumns, getDisplayedColumns } from './utils';
   templateUrl: './query-renderer.component.html',
   styleUrls: ['./query-renderer.component.css'],
 })
-export class QueryRendererComponent implements OnInit {
+class QueryRendererComponent implements OnInit {
   data: any = {};
   displayedColumns: string[] = [];
   tableData: any[] = [];
@@ -94,3 +94,5 @@ export class QueryRendererComponent implements OnInit {
     });
   }
 }
+
+export { QueryRendererComponent };
