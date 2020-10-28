@@ -15,6 +15,7 @@ class CreateNgAppTemplate extends TemplatePackage {
           '--routing=false',
           '--style=css',
           '--minimal=true',
+          '--packageManager=npm',
         ])
         .catch((e) => {
           if (e.toString().indexOf('ENOENT') !== -1) {
