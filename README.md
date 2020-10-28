@@ -67,3 +67,29 @@ The `templatePackages` field describes all the packages the template consists of
   "version": "0.0.1"
 }
 ```
+
+### Development & Testing
+
+In production, the `manifest.json` file, along with all the packages, are fetched from the [https://github.com/cube-js/cubejs-playground-templates]() master branch.
+
+You can avoid this behavior and make the `server` "fetch" those packages from a local folder. To do so, go through the next steps:
+
+1. run the server using the `TEST_TEMPLATES` env variable
+
+```bash
+TEST_TEMPLATES=true yarn start
+```
+
+2. create a `.tmp` folder, where the `cubejs-playground-templates` will be stored
+
+```bash
+mkdir /Users/username/Projects/cubejs-app/node_modules/.tmp
+```
+
+3. create a symlink to the local repository
+
+```bash
+ln -s /Users/username/Projects/cubejs-playground-templates /Users/username/Projects/cubejs-app/node_modules/.tmp/cubejs-playground-templates
+```
+
+Now, when you open the templates gallery in the Playground (by default at [http://localhost:4000/#/template-gallery]()), you'll see the templates you're developing locally.

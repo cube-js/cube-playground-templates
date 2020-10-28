@@ -5,7 +5,9 @@ const { parse } = require('@babel/parser');
 
 const SourceSnippet = require('./SourceSnippet');
 const CssSourceSnippet = require('./CssSourceSnippet');
+const HtmlSourceSnippet = require('./HtmlSourceSnippet');
 const CssTargetSource = require('./CssTargetSource');
+const HtmlTargetSource = require('./HtmlTargetSource');
 const TargetSource = require('./TargetSource');
 const { fileContentsRecursive } = require('./utils');
 
@@ -110,13 +112,17 @@ class TemplatePackage {
   createTargetSource(fileName, content) {
     if (fileName.match(/\.css$/)) {
       return new CssTargetSource(fileName, content);
+    } else if (fileName.match(/\.html$/)) {
+      return new HtmlTargetSource(fileName, content);
     } else {
       return new TargetSource(fileName, content);
     }
   }
 
   createSourceSnippet(fileName, source, historySnippets = []) {
-    if (fileName.match(/\.css$/)) {
+    if (fileName.match(/\.html$/)) {
+      return new HtmlSourceSnippet(source);
+    } else if (fileName.match(/\.css$/)) {
       return new CssSourceSnippet(source);
     } else {
       return new SourceSnippet(source, historySnippets);
@@ -124,6 +130,8 @@ class TemplatePackage {
   }
 
   async onBeforeApply() {}
+
+  async onBeforePersist(sourceContainer) {}
 
   async onAfterApply(sourceContainer) {
     sourceContainer.addImportDependencies(this.importDependencies());
@@ -137,6 +145,7 @@ class TemplatePackage {
     if (this.multiPackage || packageVersions[this.name] !== this.version) {
       this.mergeSources(sourceContainer, packageVersions[this.name]);
 
+      await this.onBeforePersist(sourceContainer);
       await this.appContainer.persistSources(
         sourceContainer,
         this.multiPackage ? {} : { [this.name]: this.version }
@@ -157,14 +166,19 @@ class TemplatePackage {
 
   importDependencies() {
     const allImports = R.toPairs(this.templateSources)
-      .filter(([fileName]) => fileName.match(/\.js$/))
+      .filter(([fileName]) => fileName.match(/\.[jt]s$/))
       .map(([fileName, content]) => {
         const imports = [];
 
         const ast = parse(content, {
           sourceFilename: fileName,
           sourceType: 'module',
-          plugins: ['jsx'],
+          plugins: [
+            'jsx',
+            'typescript',
+            'classProperties',
+            'decorators-legacy',
+          ],
         });
 
         traverse(ast, {

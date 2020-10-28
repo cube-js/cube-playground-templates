@@ -2,6 +2,7 @@ const TemplatePackage = require('./src/TemplatePackage');
 const AppSnippet = require('./src/AppSnippet');
 const ChartSnippet = require('./src/ChartSnippet');
 const ChartRendererSnippet = require('./src/ChartRendererSnippet');
+const QueryRendererSnippet = require('./src/QueryRendererSnippet');
 const CredentialsSnippet = require('./src/CredentialsSnippet');
 const SourceSnippet = require('./src/SourceSnippet');
 const IndexSnippet = require('./src/IndexSnippet');
@@ -15,5 +16,6 @@ module.exports = {
   ChartSnippet,
   SourceSnippet,
   ChartRendererSnippet,
+  QueryRendererSnippet,
   utils,
 };

@@ -11,7 +11,7 @@ class TargetSource {
       this.ast = parse(source, {
         sourceFilename: fileName,
         sourceType: 'module',
-        plugins: ['jsx'],
+        plugins: ['jsx', 'typescript', 'classProperties', 'decorators-legacy'],
       });
     } catch (e) {
       throw new Error(`Can't parse ${fileName}: ${e.message}`);
@@ -65,10 +65,12 @@ class TargetSource {
   }
 
   static formatCode(code) {
-    return prettier.format(code, {
-      parser: 'babel',
-      singleQuote: true,
-    });
+    // todo: fix constructor properties
+    return code;
+    // return prettier.format(code, {
+    //   parser: 'babel',
+    //   singleQuote: true,
+    // });
   }
 }
 

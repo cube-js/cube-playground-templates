@@ -9,6 +9,14 @@
       }
     },
     {
+      "name": "create-ng-app",
+      "version": "0.0.1",
+      "installsTo": null,
+      "receives": {
+        "ng-ui-framework": "0.1.0"
+      }
+    },
+    {
       "name": "react-antd-dynamic",
       "version": "0.0.1",
       "installsTo": {
@@ -19,6 +27,17 @@
         "react-table": "0.0.1",
         "credentials": "0.0.1",
         "react-transport": "0.0.1"
+      }
+    },
+    {
+      "name": "ng-material-dynamic",
+      "version": "0.0.1",
+      "installsTo": {
+        "ng-ui-framework": "0.0.1"
+      },
+      "receives": {
+        "ng-chart": "0.0.1",
+        "credentials": "0.0.1"
       }
     },
     {
@@ -76,6 +95,13 @@
       }
     },
     {
+      "name": "ng2-charts",
+      "version": "0.0.1",
+      "installsTo": {
+        "ng-chart": "0.0.1"
+      }
+    },
+    {
       "name": "static-chart",
       "version": "0.0.1",
       "multiPackage": true,
@@ -99,6 +125,13 @@
     },
     {
       "name": "react-credentials",
+      "version": "0.0.1",
+      "installsTo": {
+        "credentials": "0.0.1"
+      }
+    },
+    {
+      "name": "ng-credentials",
       "version": "0.0.1",
       "installsTo": {
         "credentials": "0.0.1"
@@ -161,6 +194,17 @@
         "d3-charts",
         "material-tables",
         "react-credentials"
+      ]
+    },
+    {
+      "name": "Dynamic Angular Material UI Dashboard",
+      "coverUrl": null,
+      "description": "Use this template to create a dynamic dashboard application with Angular, Material UI and ng2-charts. It comes with a dynamic query builder and Apollo GraphQL client. Use it when you want to allow users to edit dashboards.",
+      "templatePackages": [
+        "create-ng-app",
+        "ng-material-dynamic",
+        "ng-credentials",
+        "ng2-charts"
       ]
     }
   ]

@@ -17,3 +17,5 @@ yarn-error.log*
 
 # Vim swap files
 *.swp
+
+playground

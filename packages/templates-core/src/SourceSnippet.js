@@ -30,7 +30,7 @@ class SourceSnippet {
     try {
       return parse(source, {
         sourceType: 'module',
-        plugins: ['jsx'],
+        plugins: ['jsx', 'typescript', 'classProperties', 'decorators-legacy'],
       });
     } catch (e) {
       throw new Error(`Can't parse source snippet: ${e.message}\n${source}`);
@@ -85,9 +85,10 @@ class SourceSnippet {
           declaration.get('id').node.name === d.get('id').node.name
       );
       if (!existingDefinition) {
-        this.insertAnchor(targetSource).insertBefore(
-          t.variableDeclaration('const', [declaration.node])
-        );
+        this.insertAnchor(targetSource) &&
+          this.insertAnchor(targetSource).insertBefore(
+            t.variableDeclaration('const', [declaration.node])
+          );
       } else {
         this.handleExistingMerge(
           existingDefinition,
