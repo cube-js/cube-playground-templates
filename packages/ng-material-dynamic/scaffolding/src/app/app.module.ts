@@ -21,7 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CubejsClientModule, QueryBuilderService } from '@cubejs-client/ngx';
 import { ChartsModule } from 'ng2-charts';
 import { HttpLink } from 'apollo-angular/http';
-import { Apollo, APOLLO_OPTIONS, gql } from 'apollo-angular';
+import { APOLLO_OPTIONS } from 'apollo-angular';
 import { GridsterModule } from 'angular-gridster2';
 
 import { AppComponent } from './app.component';
@@ -40,7 +40,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AddToDashboardDialogComponent } from './explore/add-to-dashboard-dialog/add-to-dashboard-dialog.component';
 import { QueryRendererComponent } from './explore/query-renderer/query-renderer.component';
 import apolloClient from '../graphql/client';
-import { GridComponent } from './dashboard/grid/grid.component';
 
 const API_URL = undefined;
 const CUBEJS_TOKEN = undefined;
@@ -66,7 +65,6 @@ const cubejsOptions = {
     AddToDashboardDialogComponent,
     FilterGroupComponent,
     FilterComponent,
-    GridComponent,
   ],
   entryComponents: [SettingsDialogComponent, AddToDashboardDialogComponent],
   imports: [

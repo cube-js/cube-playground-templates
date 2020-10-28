@@ -20,7 +20,6 @@ import { flattenColumns, getDisplayedColumns } from './utils';
   styleUrls: ['./query-renderer.component.css'],
 })
 class QueryRendererComponent implements OnInit {
-  data: any = {};
   displayedColumns: string[] = [];
   tableData: any[] = [];
   columnTitles: string[] = [];
@@ -39,26 +38,6 @@ class QueryRendererComponent implements OnInit {
       },
     },
   };
-
-  @Input()
-  resetResultSetOnChange: boolean = false;
-
-  @Input('cubeQuery')
-  cubeQuery$: Observable<Query>;
-
-  @Input('pivotConfig')
-  pivotConfig$: Observable<TPivotConfig>;
-
-  @Input('chartType')
-  chartType$: Observable<TChartType>;
-
-  chartType: TChartType;
-
-  constructor(
-    private cubejsClient: CubejsClient,
-    private snakBar: MatSnackBar,
-    private dialog: MatDialog
-  ) {}
 
   updateChart(resultSet: ResultSet | null, pivotConfig: TPivotConfig) {
     if (!resultSet) {

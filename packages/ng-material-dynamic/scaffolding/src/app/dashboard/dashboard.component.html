@@ -6,7 +6,10 @@
   >
 </div>
 
-<div style="min-height: 100%; width: 100%;">
+<div
+  *ngIf="(dashboardItems | async).length > 0"
+  style="min-height: 100%; width: 100%;"
+>
   <gridster [options]="options" style="background-color: #dadada;">
     <gridster-item
       [item]="item.plain.grid"

@@ -1,4 +1,6 @@
 const { TemplatePackage } = require('../templates-core');
+const fs = require('fs-extra');
+const path = require('path');
 
 class CreateNgAppTemplate extends TemplatePackage {
   async onBeforeApply() {
@@ -22,6 +24,24 @@ class CreateNgAppTemplate extends TemplatePackage {
           }
           throw e;
         });
+    }
+  }
+
+  async onAfterApply() {
+    const appPath = path.resolve(this.appContainer.appPath);
+    const content = fs.readFileSync(`${appPath}/tsconfig.json`, 'utf-8');
+
+    if (content) {
+      try {
+        const json = JSON.parse(content.replace(/\/\*(.*)\*\//, ''));
+        json.compilerOptions.allowSyntheticDefaultImports = true;
+        fs.writeFileSync(
+          `${appPath}/tsconfig.json`,
+          JSON.stringify(json, null, 2)
+        );
+      } catch (error) {
+        console.error(`Cannot parse 'tsconfig.json`, error);
+      }
     }
   }
 }

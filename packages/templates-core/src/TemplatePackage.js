@@ -131,6 +131,8 @@ class TemplatePackage {
 
   async onBeforeApply() {}
 
+  async onBeforePersist(sourceContainer) {}
+
   async onAfterApply(sourceContainer) {
     sourceContainer.addImportDependencies(this.importDependencies());
   }
@@ -143,6 +145,7 @@ class TemplatePackage {
     if (this.multiPackage || packageVersions[this.name] !== this.version) {
       this.mergeSources(sourceContainer, packageVersions[this.name]);
 
+      await this.onBeforePersist(sourceContainer);
       await this.appContainer.persistSources(
         sourceContainer,
         this.multiPackage ? {} : { [this.name]: this.version }
@@ -163,14 +166,19 @@ class TemplatePackage {
 
   importDependencies() {
     const allImports = R.toPairs(this.templateSources)
-      .filter(([fileName]) => fileName.match(/\.js$/))
+      .filter(([fileName]) => fileName.match(/\.[jt]s$/))
       .map(([fileName, content]) => {
         const imports = [];
 
         const ast = parse(content, {
           sourceFilename: fileName,
           sourceType: 'module',
-          plugins: ['jsx'],
+          plugins: [
+            'jsx',
+            'typescript',
+            'classProperties',
+            'decorators-legacy',
+          ],
         });
 
         traverse(ast, {

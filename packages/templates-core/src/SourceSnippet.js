@@ -85,9 +85,10 @@ class SourceSnippet {
           declaration.get('id').node.name === d.get('id').node.name
       );
       if (!existingDefinition) {
-        this.insertAnchor(targetSource).insertBefore(
-          t.variableDeclaration('const', [declaration.node])
-        );
+        this.insertAnchor(targetSource) &&
+          this.insertAnchor(targetSource).insertBefore(
+            t.variableDeclaration('const', [declaration.node])
+          );
       } else {
         this.handleExistingMerge(
           existingDefinition,

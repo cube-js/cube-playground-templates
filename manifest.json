@@ -197,9 +197,9 @@
       ]
     },
     {
-      "name": "Dynamic Material UI Angular Dashboard",
+      "name": "Dynamic Angular Material UI Dashboard",
       "coverUrl": null,
-      "description": "To be provided...",
+      "description": "Use this template to create a dynamic dashboard application with Angular, Material UI and ng2-charts. It comes with a dynamic query builder and Apollo GraphQL client. Use it when you want to allow users to edit dashboards.",
       "templatePackages": [
         "create-ng-app",
         "ng-material-dynamic",

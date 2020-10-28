@@ -1,6 +1,7 @@
 .chart-container {
   position: relative;
   height: calc(100% - 52px);
+  min-height: 400px;
 }
 
 .action-button-wrapper {
