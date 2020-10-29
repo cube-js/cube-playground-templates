@@ -9,7 +9,7 @@ class CreateNgAppTemplate extends TemplatePackage {
     if (!isInstalled) {
       await this.appContainer
         .executeCommand('npx', [
-          'ng',
+          '@angular/cli',
           'n',
           this.appContainer.appPath,
           '--routing=false',
