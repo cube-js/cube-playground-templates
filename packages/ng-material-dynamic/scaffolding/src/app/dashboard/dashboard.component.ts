@@ -23,7 +23,7 @@ interface Safe extends GridsterConfig {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent implements OnInit {
+class DashboardComponent implements OnInit {
   dashboardItems = new BehaviorSubject<any[]>([]);
   options: Safe;
 
@@ -216,3 +216,5 @@ export class DashboardComponent implements OnInit {
     });
   }
 }
+
+export { DashboardComponent };
