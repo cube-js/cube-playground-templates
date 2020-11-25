@@ -1,5 +1,5 @@
 {
-  "description": "Cube.js Playground Templates",
+  "description": "test",
   "author": "Cube Dev, Inc.",
   "license": "MIT",
   "devDependencies": {
@@ -13,10 +13,6 @@
     }
   },
   "dependencies": {
-    "@cubejs-client/core": "^0.23.11",
-    "@cubejs-client/react": "^0.23.11",
-    "@cubejs-templates/core": "latest",
-    "bizcharts": "^4.0.14",
-    "recharts": "^1.8.5"
+    "@cubejs-templates/core": "latest"
   }
 }

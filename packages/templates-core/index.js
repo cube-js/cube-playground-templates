@@ -6,6 +6,7 @@ const QueryRendererSnippet = require('./src/QueryRendererSnippet');
 const CredentialsSnippet = require('./src/CredentialsSnippet');
 const SourceSnippet = require('./src/SourceSnippet');
 const IndexSnippet = require('./src/IndexSnippet');
+const TargetSource = require('./src/TargetSource');
 const utils = require('./src/utils');
 
 module.exports = {
@@ -17,5 +18,6 @@ module.exports = {
   SourceSnippet,
   ChartRendererSnippet,
   QueryRendererSnippet,
+  TargetSource,
   utils,
 };
