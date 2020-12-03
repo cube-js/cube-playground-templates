@@ -1,5 +1,6 @@
 import cubejs from '@cubejs-client/core';
 import { CubeProvider, useCubeQuery } from '@cubejs-client/react';
+import { Spin } from 'antd';
 
 const API_URL = undefined;
 const CUBEJS_TOKEN = undefined;
@@ -12,7 +13,7 @@ const ChartRenderer = ({ renderFunction, query, pivotConfig }) => {
   const renderProps = useCubeQuery(query);
 
   if (!renderProps.resultSet) {
-    return <div>Loading...</div>;
+    return <Spin />;
   }
 
   return renderFunction({ ...renderProps, pivotConfig });

@@ -1,0 +1,7 @@
+<div>chart type: {{ chartType | async | json }}</div>
+
+<ng2-chart-renderer
+  [chartType]="chartType.asObservable()"
+  [cubeQuery]="cubeQuery.asObservable()"
+  [pivotConfig]="pivotConfig.asObservable()"
+></ng2-chart-renderer>

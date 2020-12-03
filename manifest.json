@@ -27,6 +27,15 @@
       }
     },
     {
+      "name": "dev-cnga",
+      "version": "0.0.1",
+      "installsTo": null,
+      "receives": {
+        "ng-ui-framework": "0.0.1",
+        "single-chart": "0.0.1"
+      }
+    },
+    {
       "name": "react-charting-library",
       "version": "0.0.1",
       "installsTo": null,
@@ -40,6 +49,16 @@
       "version": "0.0.1",
       "installsTo": {
         "react-ui-framework": "0.0.1"
+      },
+      "receives": {
+        "credentials": "0.0.1"
+      }
+    },
+    {
+      "name": "angular-charts",
+      "version": "0.0.1",
+      "installsTo": {
+        "ng-ui-framework": "0.0.1"
       },
       "receives": {
         "credentials": "0.0.1"

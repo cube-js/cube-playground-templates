@@ -5,16 +5,35 @@ const prettier = require('prettier');
 
 class TargetSource {
   constructor(fileName, source) {
+    this.fileName = fileName;
+
+    if (fileName.match(/\.(tsx?)$/)) {
+      source = source.replace('export class', 'class');
+    }
+
     this.source = source;
     this.fileName = fileName;
     try {
       this.ast = parse(source, {
         sourceFilename: fileName,
         sourceType: 'module',
-        plugins: ['jsx', 'typescript', 'classProperties', 'decorators-legacy'],
+        plugins: [
+          'jsx',
+          'typescript',
+          'classProperties',
+          [
+            'decorators',
+            {
+              decoratorsBeforeExport: true,
+            },
+          ],
+        ],
       });
     } catch (e) {
-      throw new Error(`Can't parse ${fileName}: ${e.message}`);
+      if (fileName.match(/\.([tj]sx?)$/)) {
+        throw new Error(`Can't parse ${fileName}: ${e.message}`);
+      }
+      console.warn(`Attempt to parse ${fileName} file`);
     }
     this.findAllImports();
     this.findAllDefinitions();
@@ -57,13 +76,22 @@ class TargetSource {
   }
 
   code() {
-    return (
-      (this.ast && generator(this.ast, {}, this.source).code) || this.source
-    );
+    const code =
+      (this.ast && generator(this.ast, { comments: true }, this.source).code) ||
+      this.source;
+
+    if (this.fileName.match(/\.(tsx?)$/)) {
+      return code.replace('class ', 'export class ');
+    }
+
+    return code;
   }
 
   formattedCode() {
-    return TargetSource.formatCode(this.code());
+    return TargetSource.formatCode(
+      this.code(),
+      this.fileName.match(/\.(tsx?)$/) ? 'typescript' : 'babel'
+    );
   }
 
   getImportDependencies() {
@@ -79,10 +107,10 @@ class TargetSource {
       });
   }
 
-  static formatCode(code) {
+  static formatCode(code, parser = 'babel') {
     try {
       return prettier.format(code, {
-        parser: 'babel',
+        parser,
         singleQuote: true,
       });
     } catch (error) {
