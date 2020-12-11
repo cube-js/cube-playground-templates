@@ -5,8 +5,10 @@ import { Spin } from 'antd';
 const API_URL = undefined;
 const CUBEJS_TOKEN = undefined;
 
-const cubejsApi = cubejs(CUBEJS_TOKEN, {
-  apiUrl: API_URL,
+const data = window.parent.window['__cubejs'] || {};
+
+const cubejsApi = cubejs(data.token || CUBEJS_TOKEN, {
+  apiUrl: data.apiUrl || API_URL,
 });
 
 const ChartRenderer = ({ renderFunction, query, pivotConfig }) => {

@@ -7,16 +7,12 @@ class CreateNgAppTemplate extends TemplatePackage {
     const isInstalled = this.appContainer.getPackageVersions()[this.name];
 
     if (!isInstalled) {
-      // await this.appContainer.executeCommand(
-      //   'cd',
-      //   path.dirname(this.appContainer.appPath)
-      // );
       await this.appContainer
         .executeCommand(
           'npx',
           [
             '@angular/cli',
-            'n',
+            'new',
             path.basename(this.appContainer.appPath),
             '--routing=false',
             '--style=css',
@@ -36,7 +32,6 @@ class CreateNgAppTemplate extends TemplatePackage {
           }
           throw e;
         });
-      // await this.appContainer.executeCommand('cd', '-');
     }
   }
 

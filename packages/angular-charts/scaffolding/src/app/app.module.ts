@@ -9,10 +9,15 @@ import { AppComponent } from './app.component';
 import { AngularNg2Charts } from './angular-ng2-charts/query-renderer.component';
 import { AngularTestCharts } from './angular-test-charts/query-renderer.component';
 
+const API_URL = undefined;
+const CUBEJS_TOKEN = undefined;
+
+const { apiUrl, token } = window.parent.window['__cubejs'] || {};
+
 const cubejsOptions = {
-  token: 'CUBEJS_TOKEN',
+  token: token || CUBEJS_TOKEN,
   options: {
-    apiUrl: `http://localhost:4000/cubejs-api/v1`,
+    apiUrl: apiUrl || API_URL,
   },
 };
 
