@@ -1,4 +1,12 @@
-<div *ngIf="isQueryPresent">
+<ngx-spinner
+  bdColor="rgba(0,0,0,0)"
+  size="default"
+  color="#000"
+  type="ball-spin"
+  [fullScreen]="false"
+></ngx-spinner>
+
+<div *ngIf="isQueryPresent && !loading">
   <div *ngIf="chartType !== 'table'" class="chart-container">
     <canvas
       *ngIf="chartType === 'line'"

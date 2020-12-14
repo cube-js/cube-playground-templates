@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { isQueryPresent, ResultSet } from '@cubejs-client/core';
 import { CubejsClient, TChartType } from '@cubejs-client/ngx';
-import { BehaviorSubject, combineLatest, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, of, merge } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { getDisplayedColumns, flattenColumns } from './utils';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'query-renderer',
@@ -59,30 +60,55 @@ export class QueryRendererComponent {
       },
     },
   };
+  loading = false;
 
-  constructor(private cubejsClient: CubejsClient) {}
+  constructor(
+    private cubejsClient: CubejsClient,
+    private spinner: NgxSpinnerService
+  ) {}
 
   ngOnInit() {
     combineLatest([
       this.cubeQuery$.pipe(
         switchMap((cubeQuery) => {
+          return of(isQueryPresent(cubeQuery || {}));
+        })
+      ),
+      this.cubeQuery$.pipe(
+        switchMap((cubeQuery) => {
           if (!isQueryPresent(cubeQuery || {})) {
             return of(null);
           }
-          return this.cubejsClient.load(cubeQuery).pipe(
-            catchError((error) => {
-              console.error(error);
-              return of(null);
-            })
+          this.loading = true;
+          this.spinner.show();
+
+          return merge(
+            of(null),
+            this.cubejsClient.load(cubeQuery).pipe(
+              catchError((error) => {
+                console.error(error);
+                return of(null);
+              })
+            )
           );
         })
       ),
       this.pivotConfig$,
       this.chartType$,
     ]).subscribe(
-      ([resultSet, pivotConfig, chartType]: [ResultSet, any, TChartType]) => {
+      ([isQueryPresent, resultSet, pivotConfig, chartType]: [
+        boolean,
+        ResultSet,
+        any,
+        TChartType
+      ]) => {
         this.chartType = chartType;
-        this.isQueryPresent = resultSet != null;
+        this.isQueryPresent = isQueryPresent;
+
+        if (resultSet != null) {
+          this.spinner.hide();
+          this.loading = false;
+        }
 
         if (this.chartType === 'table') {
           this.updateTableData(resultSet, pivotConfig);
