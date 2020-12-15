@@ -2,6 +2,10 @@ import { Line, Bar, Pie } from 'react-chartjs-2';
 
 const COLORS_SERIES = ['#FF6492', '#141446', '#7A77FF'];
 
+const commonOptions = {
+  maintainAspectRatio: false,
+};
+
 const TypeToChartComponent = {
   line: ({ resultSet }) => {
     const data = {
@@ -13,7 +17,9 @@ const TypeToChartComponent = {
         fill: false,
       })),
     };
-    const options = {};
+    const options = {
+      ...commonOptions,
+    };
     return <Line data={data} options={options} />;
   },
   bar: ({ resultSet }) => {
@@ -27,7 +33,10 @@ const TypeToChartComponent = {
       })),
     };
     const options = {
-      scales: { xAxes: [{ stacked: true }] },
+      ...commonOptions,
+      scales: {
+        xAxes: [{ stacked: true }],
+      },
     };
     return <Bar data={data} options={options} />;
   },
@@ -41,7 +50,10 @@ const TypeToChartComponent = {
       })),
     };
     const options = {
-      scales: { yAxes: [{ stacked: true }] },
+      ...commonOptions,
+      scales: {
+        yAxes: [{ stacked: true }],
+      },
     };
     return <Line data={data} options={options} />;
   },
@@ -55,7 +67,9 @@ const TypeToChartComponent = {
         hoverBackgroundColor: COLORS_SERIES,
       })),
     };
-    const options = {};
+    const options = {
+      ...commonOptions,
+    };
     return <Pie data={data} options={options} />;
   },
 };

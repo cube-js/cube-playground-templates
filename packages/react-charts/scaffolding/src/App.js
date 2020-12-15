@@ -33,7 +33,13 @@ const App = () => {
         setLibrary(chartingLibrary);
       }
       if (chartType) {
-        setChartType(chartType);
+        if (chartingLibrary === 'bizcharts') {
+          // avoid the bug where bizchars would throw an error on chart type change
+          setChartType(null);
+          setTimeout(() => setChartType(chartType), 0);
+        } else {
+          setChartType(chartType);
+        }
       }
     });
   }, []);
