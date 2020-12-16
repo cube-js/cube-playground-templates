@@ -13,7 +13,7 @@ const App = () => {
   const [chartType, setChartType] = useState(null);
 
   useEffect(() => {
-    window['__cubejs'] = {
+    window['__cubejsPlayground'] = {
       getCodesandboxFiles,
       getDependencies,
     };

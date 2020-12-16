@@ -14,7 +14,7 @@ import { AngularTestCharts } from './angular-test-charts/query-renderer.componen
 const API_URL = undefined;
 const CUBEJS_TOKEN = undefined;
 
-const { apiUrl, token } = window.parent.window['__cubejs'] || {};
+const { apiUrl, token } = window.parent.window['__cubejsPlayground'] || {};
 
 const cubejsOptions = {
   token: token || CUBEJS_TOKEN,

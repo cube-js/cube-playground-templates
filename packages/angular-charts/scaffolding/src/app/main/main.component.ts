@@ -16,7 +16,7 @@ export class MainComponent implements OnInit {
   chartType$ = new BehaviorSubject<any>('line');
 
   constructor() {
-    window['__cubejs'] = {
+    window['__cubejsPlayground'] = {
       getDependencies,
       getCodesandboxFiles,
     };

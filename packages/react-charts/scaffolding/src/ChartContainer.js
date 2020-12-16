@@ -5,7 +5,7 @@ import { Spin } from 'antd';
 const API_URL = undefined;
 const CUBEJS_TOKEN = undefined;
 
-const data = window.parent.window['__cubejs'] || {};
+const data = window.parent.window['__cubejsPlayground'] || {};
 
 const cubejsApi = cubejs(data.token || CUBEJS_TOKEN, {
   apiUrl: data.apiUrl || API_URL,
