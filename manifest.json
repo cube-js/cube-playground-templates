@@ -5,7 +5,8 @@
       "version": "0.0.1",
       "installsTo": null,
       "receives": {
-        "react-ui-framework": "0.0.1"
+        "react-ui-framework": "0.0.1",
+        "single-chart": "0.0.1"
       }
     },
     {
@@ -14,6 +15,53 @@
       "installsTo": null,
       "receives": {
         "ng-ui-framework": "0.1.0"
+      }
+    },
+    {
+      "name": "dev-cra",
+      "version": "0.0.1",
+      "installsTo": null,
+      "receives": {
+        "react-ui-framework": "0.0.1",
+        "single-chart": "0.0.1"
+      }
+    },
+    {
+      "name": "dev-cnga",
+      "version": "0.0.1",
+      "installsTo": null,
+      "receives": {
+        "ng-ui-framework": "0.0.1",
+        "single-chart": "0.0.1"
+      }
+    },
+    {
+      "name": "react-charting-library",
+      "version": "0.0.1",
+      "installsTo": null,
+      "receives": {
+        "react-chart": "0.0.1",
+        "react-table": "0.0.1"
+      }
+    },
+    {
+      "name": "react-charts",
+      "version": "0.0.1",
+      "installsTo": {
+        "react-ui-framework": "0.0.1"
+      },
+      "receives": {
+        "credentials": "0.0.1"
+      }
+    },
+    {
+      "name": "angular-charts",
+      "version": "0.0.1",
+      "installsTo": {
+        "ng-ui-framework": "0.0.1"
+      },
+      "receives": {
+        "credentials": "0.0.1"
       }
     },
     {
@@ -142,6 +190,20 @@
       "version": "0.0.1",
       "installsTo": {
         "react-transport": "0.0.1"
+      }
+    },
+    {
+      "name": "react-bizcharts-line",
+      "version": "0.0.1",
+      "installsTo": {
+        "single-chart": "0.0.1"
+      }
+    },
+    {
+      "name": "react-bizcharts-bar",
+      "version": "0.0.1",
+      "installsTo": {
+        "single-chart": "0.0.1"
       }
     }
   ],

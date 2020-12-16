@@ -17,3 +17,4 @@ yarn-error.log*
 
 # Vim swap files
 *.swp
+dist/

@@ -13,6 +13,10 @@
     }
   },
   "dependencies": {
-    "@cubejs-templates/core": "latest"
+    "@cubejs-client/core": "^0.23.11",
+    "@cubejs-client/react": "^0.23.11",
+    "@cubejs-templates/core": "latest",
+    "bizcharts": "^4.0.14",
+    "recharts": "^1.8.5"
   }
 }

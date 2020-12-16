@@ -47,63 +47,71 @@ const stackedChartData = (resultSet) => {
 };
 
 const TypeToChartComponent = {
-  line: ({ resultSet }) => (
-    <CartesianChart resultSet={resultSet} ChartComponent={LineChart}>
-      {resultSet.seriesNames().map((series, i) => (
-        <Line
-          key={series.key}
-          stackId="a"
-          dataKey={series.key}
-          name={series.title}
-          stroke={colors[i]}
-        />
-      ))}
-    </CartesianChart>
-  ),
-  bar: ({ resultSet }) => (
-    <CartesianChart resultSet={resultSet} ChartComponent={BarChart}>
-      {resultSet.seriesNames().map((series, i) => (
-        <Bar
-          key={series.key}
-          stackId="a"
-          dataKey={series.key}
-          name={series.title}
-          fill={colors[i]}
-        />
-      ))}
-    </CartesianChart>
-  ),
-  area: ({ resultSet }) => (
-    <CartesianChart resultSet={resultSet} ChartComponent={AreaChart}>
-      {resultSet.seriesNames().map((series, i) => (
-        <Area
-          key={series.key}
-          stackId="a"
-          dataKey={series.key}
-          name={series.title}
-          stroke={colors[i]}
-          fill={colors[i]}
-        />
-      ))}
-    </CartesianChart>
-  ),
-  pie: ({ resultSet }) => (
-    <ResponsiveContainer width="100%" height={350}>
-      <PieChart>
-        <Pie
-          isAnimationActive={false}
-          data={resultSet.chartPivot()}
-          nameKey="x"
-          dataKey={resultSet.seriesNames()[0].key}
-          fill="#8884d8"
-        >
-          {resultSet.chartPivot().map((e, index) => (
-            <Cell key={index} fill={colors[index % colors.length]} />
-          ))}
-        </Pie>
-        <Legend />
-        <Tooltip />
-      </PieChart>
-    </ResponsiveContainer>
-  ),
+  line: ({ resultSet }) => {
+    return (
+      <CartesianChart resultSet={resultSet} ChartComponent={LineChart}>
+        {resultSet.seriesNames().map((series, i) => (
+          <Line
+            key={series.key}
+            stackId="a"
+            dataKey={series.key}
+            name={series.title}
+            stroke={colors[i]}
+          />
+        ))}
+      </CartesianChart>
+    );
+  },
+  bar: ({ resultSet }) => {
+    return (
+      <CartesianChart resultSet={resultSet} ChartComponent={BarChart}>
+        {resultSet.seriesNames().map((series, i) => (
+          <Bar
+            key={series.key}
+            stackId="a"
+            dataKey={series.key}
+            name={series.title}
+            fill={colors[i]}
+          />
+        ))}
+      </CartesianChart>
+    );
+  },
+  area: ({ resultSet }) => {
+    return (
+      <CartesianChart resultSet={resultSet} ChartComponent={AreaChart}>
+        {resultSet.seriesNames().map((series, i) => (
+          <Area
+            key={series.key}
+            stackId="a"
+            dataKey={series.key}
+            name={series.title}
+            stroke={colors[i]}
+            fill={colors[i]}
+          />
+        ))}
+      </CartesianChart>
+    );
+  },
+  pie: ({ resultSet }) => {
+    return (
+      <ResponsiveContainer width="100%" height={350}>
+        <PieChart>
+          <Pie
+            isAnimationActive={false}
+            data={resultSet.chartPivot()}
+            nameKey="x"
+            dataKey={resultSet.seriesNames()[0].key}
+            fill="#8884d8"
+          >
+            {resultSet.chartPivot().map((e, index) => (
+              <Cell key={index} fill={colors[index % colors.length]} />
+            ))}
+          </Pie>
+          <Legend />
+          <Tooltip />
+        </PieChart>
+      </ResponsiveContainer>
+    );
+  },
 };

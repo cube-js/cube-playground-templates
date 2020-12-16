@@ -94,16 +94,21 @@ class TemplatePackage {
               sourceContainer.addTargetSource(scaffoldingFile, targetSource);
             }
 
-            const snippet =
-              this.fileToSnippet[scaffoldingFile] ||
-              this.createSourceSnippet(
-                scaffoldingFile,
-                this.templateSources[lastVersionFile],
-                historySnippets
-              );
+            if (scaffoldingFile.match(/\.([tj]sx?|html|css)$/)) {
+              const snippet =
+                this.fileToSnippet[scaffoldingFile] ||
+                this.createSourceSnippet(
+                  scaffoldingFile,
+                  this.templateSources[lastVersionFile],
+                  historySnippets
+                );
 
-            snippet.mergeTo(targetSource);
-            sourceContainer.add(scaffoldingFile, targetSource.formattedCode());
+              snippet.mergeTo(targetSource);
+              sourceContainer.add(
+                scaffoldingFile,
+                targetSource.formattedCode()
+              );
+            }
           }
         );
       });

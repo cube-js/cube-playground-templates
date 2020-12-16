@@ -12,15 +12,16 @@
     "node": ">=8.11.1"
   },
   "dependencies": {
-    "@babel/generator": "^7.12.1",
-    "@babel/parser": "^7.12.3",
-    "@babel/preset-typescript": "^7.12.1",
-    "@babel/traverse": "^7.10.5",
-    "@babel/types": "^7.10.5",
+    "@babel/generator": "^7.12.5",
+    "@babel/parser": "^7.12.7",
+    "@babel/preset-typescript": "^7.12.7",
+    "@babel/traverse": "^7.12.9",
+    "@babel/types": "^7.12.7",
     "fs-extra": "^9.0.1",
     "semver": "^7.3.2"
   },
   "devDependencies": {
+    "@types/babel-generator": "^6.25.3",
     "@types/babel-traverse": "^6.25.5"
   }
 }

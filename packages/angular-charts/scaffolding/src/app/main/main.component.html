@@ -1,0 +1,11 @@
+<angular-ng2-charts
+  *ngIf="chartingLibrary === 'angular-ng2-charts'"
+  [cubeQuery]="query$"
+  [pivotConfig]="pivotConfig$"
+  [chartType]="chartType$"
+></angular-ng2-charts>
+
+<angular-test-charts
+  *ngIf="chartingLibrary === 'angular-test-charts'"
+  [chartType]="chartType$.asObservable()"
+></angular-test-charts>

@@ -8,15 +8,22 @@ class CreateNgAppTemplate extends TemplatePackage {
 
     if (!isInstalled) {
       await this.appContainer
-        .executeCommand('npx', [
-          '@angular/cli',
-          'n',
-          this.appContainer.appPath,
-          '--routing=false',
-          '--style=css',
-          '--minimal=true',
-          '--packageManager=npm',
-        ])
+        .executeCommand(
+          'npx',
+          [
+            '@angular/cli',
+            'new',
+            path.basename(this.appContainer.appPath),
+            '--routing=false',
+            '--style=css',
+            '--minimal=true',
+            '--packageManager=npm',
+            '--strict=false',
+          ],
+          {
+            cwd: path.dirname(this.appContainer.appPath),
+          }
+        )
         .catch((e) => {
           if (e.toString().indexOf('ENOENT') !== -1) {
             throw new Error(
