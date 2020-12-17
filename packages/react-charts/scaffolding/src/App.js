@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
 import '@ant-design/compatible';
+import './styles.css';
 import { getCodesandboxFiles, getDependencies } from './codegen';
 import ChartContainer from './ChartContainer';
 
