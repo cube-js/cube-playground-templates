@@ -12,13 +12,17 @@ const cubejsApi = cubejs(data.token || CUBEJS_TOKEN, {
 });
 
 const ChartRenderer = ({ renderFunction, query, pivotConfig }) => {
-  const renderProps = useCubeQuery(query);
+  const { error, resultSet } = useCubeQuery(query);
 
-  if (!renderProps.resultSet) {
+  if (error) {
+    return <div>{error.toString()}</div>;
+  }
+
+  if (!resultSet) {
     return <Spin />;
   }
 
-  return renderFunction({ ...renderProps, pivotConfig });
+  return renderFunction({ resultSet, pivotConfig });
 };
 
 const ChartContainer = ({ renderFunction, query, pivotConfig = null }) => {

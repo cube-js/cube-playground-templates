@@ -6,6 +6,8 @@
   [fullScreen]="false"
 ></ngx-spinner>
 
+<div *ngIf="error">{{ error }}</div>
+
 <div *ngIf="isQueryPresent && !loading">
   <div *ngIf="chartType !== 'table'" class="chart-container">
     <canvas

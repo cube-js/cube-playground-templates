@@ -41,6 +41,7 @@ export class QueryRendererComponent {
 
   chartType: any = null;
   isQueryPresent = false;
+  error: string | null = null;
 
   displayedColumns: string[] = [];
   tableData: any[] = [];
@@ -76,6 +77,7 @@ export class QueryRendererComponent {
       ),
       this.cubeQuery$.pipe(
         switchMap((cubeQuery) => {
+          this.error = null;
           if (!isQueryPresent(cubeQuery || {})) {
             return of(null);
           }
@@ -86,6 +88,8 @@ export class QueryRendererComponent {
             of(null),
             this.cubejsClient.load(cubeQuery).pipe(
               catchError((error) => {
+                this.spinner.hide();
+                this.error = error.toString();
                 console.error(error);
                 return of(null);
               })
