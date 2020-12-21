@@ -3,6 +3,11 @@ import { BehaviorSubject } from 'rxjs';
 
 import { getDependencies, getCodesandboxFiles } from '../../code-chunks';
 
+window['__cubejsPlayground'] = {
+  getDependencies,
+  getCodesandboxFiles,
+};
+
 @Component({
   selector: 'app-root',
   templateUrl: './main.component.html',
@@ -15,15 +20,12 @@ export class MainComponent implements OnInit {
   pivotConfig$ = new BehaviorSubject<any>(null);
   chartType$ = new BehaviorSubject<any>('line');
 
-  constructor() {
-    window['__cubejsPlayground'] = {
-      getDependencies,
-      getCodesandboxFiles,
-    };
-  }
-
   ngOnInit() {
-    window.dispatchEvent(new CustomEvent('cubejsChartReady'));
+    const { onChartRendererReady } =
+      window.parent.window['__cubejsPlayground'] || {};
+    if (typeof onChartRendererReady === 'function') {
+      onChartRendererReady();
+    }
   }
 
   @HostListener('window:cubejs', ['$event'])

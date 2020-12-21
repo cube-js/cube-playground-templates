@@ -1,9 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import 'antd/dist/antd.css';
 import '@ant-design/compatible';
-import './styles.css';
+import './style.css';
 import { getCodesandboxFiles, getDependencies } from './codegen';
 import ChartContainer from './ChartContainer';
+
+window['__cubejsPlayground'] = {
+  getCodesandboxFiles,
+  getDependencies,
+};
 
 const libs = {};
 
@@ -14,13 +19,14 @@ const App = () => {
   const [chartType, setChartType] = useState(null);
 
   useEffect(() => {
-    window['__cubejsPlayground'] = {
-      getCodesandboxFiles,
-      getDependencies,
-    };
+    const { onChartRendererReady } =
+      window.parent.window['__cubejsPlayground'] || {};
+    if (typeof onChartRendererReady === 'function') {
+      onChartRendererReady();
+    }
+  }, []);
 
-    window.dispatchEvent(new CustomEvent('cubejsChartReady'));
-
+  useLayoutEffect(() => {
     window.addEventListener('cubejs', (event) => {
       const { query, chartingLibrary, chartType, pivotConfig } = event.detail;
 

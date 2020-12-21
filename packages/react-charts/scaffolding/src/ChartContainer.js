@@ -1,5 +1,5 @@
 import cubejs from '@cubejs-client/core';
-import { CubeProvider, useCubeQuery } from '@cubejs-client/react';
+import { CubeProvider } from '@cubejs-client/react';
 import { Spin } from 'antd';
 
 const API_URL = undefined;
@@ -12,8 +12,6 @@ const cubejsApi = cubejs(data.token || CUBEJS_TOKEN, {
 });
 
 const ChartRenderer = ({ renderFunction, query, pivotConfig }) => {
-  const { error, resultSet } = useCubeQuery(query);
-
   if (error) {
     return <div>{error.toString()}</div>;
   }
