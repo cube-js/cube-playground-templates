@@ -112,6 +112,12 @@ export class QueryRendererComponent {
         if (resultSet != null) {
           this.spinner.hide();
           this.loading = false;
+
+          const { onQueryLoad } =
+            window.parent.window['__cubejsPlayground'] || {};
+          if (typeof onQueryLoad === 'function') {
+            onQueryLoad(resultSet);
+          }
         }
 
         if (this.chartType === 'table') {

@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import cubejs from '@cubejs-client/core';
-import { CubeProvider } from '@cubejs-client/react';
+import { CubeProvider, useCubeQuery } from '@cubejs-client/react';
 import { Spin } from 'antd';
 
 const API_URL = undefined;
@@ -12,6 +13,17 @@ const cubejsApi = cubejs(data.token || CUBEJS_TOKEN, {
 });
 
 const ChartRenderer = ({ renderFunction, query, pivotConfig }) => {
+  const { isLoading, error, resultSet } = useCubeQuery(query);
+
+  useEffect(() => {
+    if (!isLoading && resultSet) {
+      const onQueryLoad = window.parent.window['__cubejsPlayground'] || {};
+      if (typeof onQueryLoad === 'function') {
+        onQueryLoad(resultSet);
+      }
+    }
+  }, [error, isLoading, resultSet]);
+
   if (error) {
     return <div>{error.toString()}</div>;
   }
