@@ -19,6 +19,14 @@ import { NgxSpinnerService } from 'ngx-spinner';
         min-height: 400px;
       }
 
+      .numeric-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 100%;
+      }
+
       :host {
         position: absolute;
         top: 0;
@@ -61,6 +69,7 @@ export class QueryRendererComponent {
       },
     },
   };
+  numericValues: number[] = [];
   loading = false;
 
   constructor(
@@ -120,20 +129,20 @@ export class QueryRendererComponent {
           }
         }
 
-        if (this.chartType === 'table') {
-          this.updateTableData(resultSet, pivotConfig);
-        } else {
-          this.updateChartData(resultSet, pivotConfig);
+        if (resultSet) {
+          if (this.chartType === 'table') {
+            this.updateTableData(resultSet, pivotConfig);
+          } else if (this.chartType === 'number') {
+            this.updateNumericData(resultSet);
+          } else {
+            this.updateChartData(resultSet, pivotConfig);
+          }
         }
       }
     );
   }
 
   updateChartData(resultSet, pivotConfig) {
-    if (!resultSet) {
-      return;
-    }
-
     this.chartData = resultSet.series(pivotConfig).map((item) => {
       return {
         label: item.title,
@@ -145,14 +154,16 @@ export class QueryRendererComponent {
   }
 
   updateTableData(resultSet, pivotConfig) {
-    if (!resultSet) {
-      return;
-    }
-
     this.tableData = resultSet.tablePivot(pivotConfig);
     this.displayedColumns = getDisplayedColumns(
       resultSet.tableColumns(pivotConfig)
     );
     this.columnTitles = flattenColumns(resultSet.tableColumns(pivotConfig));
+  }
+
+  updateNumericData(resultSet) {
+    this.numericValues = resultSet
+      .seriesNames()
+      .map((s) => resultSet.totalRow()[s.key]);
   }
 }

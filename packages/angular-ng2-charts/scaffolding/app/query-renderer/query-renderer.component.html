@@ -8,8 +8,11 @@
 
 <div *ngIf="error">{{ error }}</div>
 
-<div *ngIf="isQueryPresent && !loading">
-  <div *ngIf="chartType !== 'table'" class="chart-container">
+<div *ngIf="isQueryPresent && !loading" style="height: 100%">
+  <div
+    *ngIf="chartType !== 'table' && chartType !== 'number'"
+    class="chart-container"
+  >
     <canvas
       *ngIf="chartType === 'line'"
       baseChart
@@ -74,4 +77,10 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
+
+  <div class="numeric-container" *ngIf="chartType === 'number'">
+    <h2 *ngFor="let value of numericValues">
+      {{ value | number }}
+    </h2>
+  </div>
 </div>
