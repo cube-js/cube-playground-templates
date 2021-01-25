@@ -1,6 +1,14 @@
 const { TemplatePackage } = require('../templates-core');
 
 class CreateReactAppTemplate extends TemplatePackage {
+  importDependencies() {
+    return {
+      ...super.importDependencies(),
+      react: '16.14.0',
+      'react-dom': '16.14.0',
+    };
+  }
+
   async onBeforeApply() {
     const isInstalled = this.appContainer.getPackageVersions()[this.name];
 
