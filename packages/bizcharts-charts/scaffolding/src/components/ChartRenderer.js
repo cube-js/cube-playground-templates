@@ -20,6 +20,7 @@ const TypeToChartComponent = {
     return (
       <Chart
         scale={{ x: { tickCount: 8 } }}
+        autoFit
         height={400}
         data={stackedChartData(resultSet)}
         forceFit
@@ -35,6 +36,7 @@ const TypeToChartComponent = {
     return (
       <Chart
         scale={{ x: { tickCount: 8 } }}
+        autoFit
         height={400}
         data={stackedChartData(resultSet)}
         forceFit
@@ -50,6 +52,7 @@ const TypeToChartComponent = {
     return (
       <Chart
         scale={{ x: { tickCount: 8 } }}
+        autoFit
         height={400}
         data={stackedChartData(resultSet)}
         forceFit
@@ -63,7 +66,7 @@ const TypeToChartComponent = {
   },
   pie: ({ resultSet }) => {
     return (
-      <Chart height={400} data={resultSet.chartPivot()} forceFit>
+      <Chart autoFit height={400} data={resultSet.chartPivot()} forceFit>
         <Coord type="theta" radius={0.75} />
         {resultSet.seriesNames().map((s) => (
           <Axis name={s.key} />

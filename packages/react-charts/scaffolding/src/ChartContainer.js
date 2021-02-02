@@ -13,16 +13,21 @@ const cubejsApi = cubejs(data.token || CUBEJS_TOKEN, {
 });
 
 const ChartRenderer = ({ renderFunction, query, pivotConfig }) => {
-  const { isLoading, error, resultSet } = useCubeQuery(query);
+  const { isLoading, error, resultSet, progress } = useCubeQuery(query);
 
   useEffect(() => {
-    if (!isLoading && resultSet) {
-      const onQueryLoad = window.parent.window['__cubejsPlayground'] || {};
+    const { onQueryLoad } = window.parent.window['__cubejsPlayground'] || {};
+
+    if (!isLoading) {
       if (typeof onQueryLoad === 'function') {
-        onQueryLoad(resultSet);
+        onQueryLoad({
+          resultSet,
+          error,
+          progress,
+        });
       }
     }
-  }, [error, isLoading, resultSet]);
+  }, [error, isLoading, resultSet, progress]);
 
   if (error) {
     return <div>{error.toString()}</div>;

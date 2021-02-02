@@ -1,7 +1,7 @@
 import { Row, Col, Statistic, Table } from 'antd';
 
 const TypeToChartComponent = {
-  number({ resultSet }) {
+  number: ({ resultSet }) => {
     return (
       <Row
         type="flex"
@@ -17,7 +17,7 @@ const TypeToChartComponent = {
       </Row>
     );
   },
-  table({ resultSet, pivotConfig }) {
+  table: ({ resultSet, pivotConfig }) => {
     return (
       <Table
         pagination={false}
