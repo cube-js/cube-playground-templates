@@ -16,16 +16,18 @@ const ChartRenderer = ({ renderFunction, query, pivotConfig }) => {
   const { isLoading, error, resultSet, progress } = useCubeQuery(query);
 
   useEffect(() => {
-    const { onQueryLoad } = window.parent.window['__cubejsPlayground'] || {};
+    const { onQueryLoad, onQueryProgress } =
+      window.parent.window['__cubejsPlayground'] || {};
 
-    if (!isLoading) {
-      if (typeof onQueryLoad === 'function') {
-        onQueryLoad({
-          resultSet,
-          error,
-          progress,
-        });
-      }
+    if (!isLoading && typeof onQueryLoad === 'function') {
+      onQueryLoad({
+        resultSet,
+        error,
+      });
+    }
+
+    if (typeof onQueryProgress === 'function') {
+      onQueryProgress(progress);
     }
   }, [error, isLoading, resultSet, progress]);
 
