@@ -28,21 +28,29 @@ export class MainComponent implements OnInit {
     }
   }
 
-  @HostListener('window:cubejs', ['$event'])
+  @HostListener('window:__cubejsPlaygroundEvent', ['$event'])
   onCubejsEvent(event: any) {
-    const { query, pivotConfig, chartType, chartingLibrary } = event.detail;
+    const {
+      query,
+      pivotConfig,
+      chartType,
+      chartingLibrary,
+      eventType,
+    } = event.detail;
 
-    if (query !== undefined) {
-      this.query$.next(query);
-    }
-    if (pivotConfig !== undefined) {
-      this.pivotConfig$.next(pivotConfig);
-    }
-    if (chartType) {
-      this.chartType$.next(chartType);
-    }
-    if (chartingLibrary) {
-      this.chartingLibrary = chartingLibrary;
+    if (eventType === 'chart') {
+      if (query !== undefined) {
+        this.query$.next(query);
+      }
+      if (pivotConfig !== undefined) {
+        this.pivotConfig$.next(pivotConfig);
+      }
+      if (chartType) {
+        this.chartType$.next(chartType);
+      }
+      if (chartingLibrary) {
+        this.chartingLibrary = chartingLibrary;
+      }
     }
   }
 }
