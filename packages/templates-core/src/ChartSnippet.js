@@ -24,15 +24,29 @@ class ChartSnippet extends SourceSnippet {
             .find((p) => p.get('name').get('name').node === 'query')
             .get('value')
             .get('expression');
+
           const rendererCall = path
             .get('attributes')
             .find((p) => p.get('name').get('name').node === 'render')
             .get('value')
             .get('expression');
-          const chartType = rendererCall
-            .get('arguments')[0]
-            .get('name')
-            .node.match(/^([a-zA-Z0-9_)]+)Render$/)[1];
+
+          let chartType = 'line';
+
+          try {
+            const chartTypeNode = rendererCall.node.body.arguments[0].properties.find(
+              (p) => {
+                if (p.type === 'ObjectProperty' && p.key.name === 'chartType') {
+                  return p.value.value;
+                }
+              }
+            );
+
+            chartType = chartTypeNode.value.value;
+          } catch (error) {
+            console.log("Can't detect chart type", error);
+          }
+
           dashboardItemsArray
             .get('init')
             .pushContainer(

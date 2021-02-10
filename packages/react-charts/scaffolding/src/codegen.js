@@ -60,6 +60,7 @@ const ChartRenderer = () => {
       resetResultSetOnChange={false}
       render={(props) => renderChart({
         ...props,
+        chartType: '${chartType}',
         pivotConfig: ${pivotConfig}
       })}
     />
