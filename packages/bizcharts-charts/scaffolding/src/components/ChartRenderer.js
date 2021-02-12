@@ -1,4 +1,4 @@
-import { Chart, Axis, Tooltip, Geom, Coord, Legend } from 'bizcharts';
+import { Chart, Axis, Tooltip, Geom, PieChart } from 'bizcharts';
 
 const stackedChartData = (resultSet) => {
   const data = resultSet
@@ -66,17 +66,19 @@ const TypeToChartComponent = {
   },
   pie: ({ resultSet }) => {
     return (
-      <Chart autoFit height={400} data={resultSet.chartPivot()} forceFit>
-        <Coord type="theta" radius={0.75} />
-        {resultSet.seriesNames().map((s) => (
-          <Axis name={s.key} />
-        ))}
-        <Legend position="right" />
-        <Tooltip />
-        {resultSet.seriesNames().map((s) => (
-          <Geom type="interval" position={s.key} color="category" />
-        ))}
-      </Chart>
+      <PieChart
+        data={resultSet.chartPivot()}
+        radius={0.8}
+        angleField={resultSet.series()[0].key}
+        colorField="x"
+        label={{
+          visible: true,
+          offset: 20,
+        }}
+        legend={{
+          position: 'bottom',
+        }}
+      />
     );
   },
 };
