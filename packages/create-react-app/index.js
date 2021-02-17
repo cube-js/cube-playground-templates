@@ -29,6 +29,10 @@ class CreateReactAppTemplate extends TemplatePackage {
         });
     }
   }
+
+  async onBeforePersist(sourceContainer) {
+    sourceContainer.fileContent['.env'] = 'SKIP_PREFLIGHT_CHECK=true';
+  }
 }
 
 module.exports = (context) => new CreateReactAppTemplate(context);
