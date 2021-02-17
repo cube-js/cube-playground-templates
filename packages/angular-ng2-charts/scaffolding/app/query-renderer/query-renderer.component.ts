@@ -6,7 +6,6 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { getDisplayedColumns, flattenColumns } from './utils';
-import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'query-renderer',
@@ -72,10 +71,7 @@ export class QueryRendererComponent {
   numericValues: number[] = [];
   loading = false;
 
-  constructor(
-    private cubejsClient: CubejsClient,
-    private spinner: NgxSpinnerService
-  ) {}
+  constructor(private cubejsClient: CubejsClient) {}
 
   ngOnInit() {
     combineLatest([
@@ -91,13 +87,11 @@ export class QueryRendererComponent {
             return of(null);
           }
           this.loading = true;
-          this.spinner.show();
 
           return merge(
             of(null),
             this.cubejsClient.load(cubeQuery).pipe(
               catchError((error) => {
-                this.spinner.hide();
                 this.error = error.toString();
                 console.error(error);
                 return of(null);
@@ -119,14 +113,16 @@ export class QueryRendererComponent {
         this.isQueryPresent = isQueryPresent;
 
         if (resultSet != null) {
-          this.spinner.hide();
           this.loading = false;
+        }
 
-          const { onQueryLoad } =
-            window.parent.window['__cubejsPlayground'] || {};
-          if (typeof onQueryLoad === 'function') {
-            onQueryLoad(resultSet);
-          }
+        const { onQueryLoad } =
+          window.parent.window['__cubejsPlayground'] || {};
+        if (typeof onQueryLoad === 'function') {
+          onQueryLoad({
+            resultSet,
+            error: this.error,
+          });
         }
 
         if (resultSet) {

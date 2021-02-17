@@ -1,14 +1,13 @@
 import { useEffect } from 'react';
 import { useCubeQuery } from '@cubejs-client/react';
-import { Spin } from 'antd';
 
 const ChartRenderer = ({ renderFunction, query, pivotConfig }) => {
+  const { onQueryLoad, onQueryProgress } =
+    window.parent.window['__cubejsPlayground'] || {};
+
   const { isLoading, error, resultSet, progress } = useCubeQuery(query);
 
   useEffect(() => {
-    const { onQueryLoad, onQueryProgress } =
-      window.parent.window['__cubejsPlayground'] || {};
-
     if (!isLoading && typeof onQueryLoad === 'function') {
       onQueryLoad({
         resultSet,
@@ -21,12 +20,8 @@ const ChartRenderer = ({ renderFunction, query, pivotConfig }) => {
     }
   }, [error, isLoading, resultSet, progress]);
 
-  if (error) {
-    return <div>{error.toString()}</div>;
-  }
-
-  if (!resultSet) {
-    return <Spin />;
+  if (!resultSet || error) {
+    return null;
   }
 
   return renderFunction({ resultSet, pivotConfig });

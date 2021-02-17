@@ -1,13 +1,3 @@
-<ngx-spinner
-  bdColor="rgba(0,0,0,0)"
-  size="default"
-  color="#000"
-  type="ball-spin"
-  [fullScreen]="false"
-></ngx-spinner>
-
-<div *ngIf="error">{{ error }}</div>
-
 <div *ngIf="isQueryPresent && !loading" style="height: 100%">
   <div
     *ngIf="chartType !== 'table' && chartType !== 'number'"
