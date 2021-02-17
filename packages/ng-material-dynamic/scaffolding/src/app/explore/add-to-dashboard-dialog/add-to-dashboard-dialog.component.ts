@@ -9,7 +9,7 @@ import { Apollo, gql } from 'apollo-angular';
   templateUrl: './add-to-dashboard-dialog.component.html',
   styleUrls: ['./add-to-dashboard-dialog.component.css'],
 })
-class AddToDashboardDialogComponent {
+export class AddToDashboardDialogComponent {
   chartForm: FormGroup;
 
   constructor(
@@ -80,5 +80,3 @@ class AddToDashboardDialogComponent {
     this.dialogRef.close();
   }
 }
-
-export { AddToDashboardDialogComponent };

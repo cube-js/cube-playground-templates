@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   selector: 'app-settings-dialog',
   templateUrl: './settings-dialog.component.html',
 })
-class SettingsDialogComponent {
+export class SettingsDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<SettingsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -15,5 +15,3 @@ class SettingsDialogComponent {
     this.dialogRef.close();
   }
 }
-
-export { SettingsDialogComponent };

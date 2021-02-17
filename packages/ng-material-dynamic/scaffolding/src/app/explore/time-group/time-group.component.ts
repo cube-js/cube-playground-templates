@@ -6,7 +6,7 @@ import { TimeDimensionMember } from '@cubejs-client/ngx';
   selector: 'time-group',
   templateUrl: './time-group.component.html',
 })
-class TimeGroupComponent {
+export class TimeGroupComponent {
   granularities = [
     { value: '', title: 'w/o grouping' },
     { value: 'hour', title: 'Hour' },
@@ -69,5 +69,3 @@ class TimeGroupComponent {
     this.timeDimensionMember.setGranularity(0, event.value || undefined);
   }
 }
-
-export { TimeGroupComponent };
