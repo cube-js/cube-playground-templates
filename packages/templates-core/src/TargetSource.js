@@ -7,27 +7,13 @@ class TargetSource {
   constructor(fileName, source) {
     this.fileName = fileName;
 
-    if (fileName.match(/\.(tsx?)$/)) {
-      source = source.replace('export class', 'class');
-    }
-
     this.source = source;
     this.fileName = fileName;
     try {
       this.ast = parse(source, {
         sourceFilename: fileName,
         sourceType: 'module',
-        plugins: [
-          'jsx',
-          'typescript',
-          'classProperties',
-          [
-            'decorators',
-            {
-              decoratorsBeforeExport: true,
-            },
-          ],
-        ],
+        plugins: ['jsx', 'typescript', 'classProperties', 'decorators-legacy'],
       });
     } catch (e) {
       if (fileName.match(/\.([tj]sx?)$/)) {
@@ -77,12 +63,16 @@ class TargetSource {
 
   code() {
     const code =
-      (this.ast && generator(this.ast, { comments: true }, this.source).code) ||
+      (this.ast &&
+        generator(
+          this.ast,
+          {
+            comments: true,
+            decoratorsBeforeExport: true,
+          },
+          this.source
+        ).code) ||
       this.source;
-
-    if (this.fileName.match(/\.(tsx?)$/)) {
-      return code.replace('class ', 'export class ');
-    }
 
     return code;
   }

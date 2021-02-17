@@ -14,7 +14,13 @@ class SourceSnippet {
   }
 
   get source() {
-    return generator(this.ast, {}, this.sourceValue).code;
+    return generator(
+      this.ast,
+      {
+        decoratorsBeforeExport: true,
+      },
+      this.sourceValue
+    ).code;
   }
 
   set source(source) {
@@ -30,17 +36,7 @@ class SourceSnippet {
     try {
       return parse(source, {
         sourceType: 'module',
-        plugins: [
-          'jsx',
-          'typescript',
-          'classProperties',
-          [
-            'decorators',
-            {
-              decoratorsBeforeExport: true,
-            },
-          ],
-        ],
+        plugins: ['jsx', 'typescript', 'classProperties', 'decorators-legacy'],
       });
     } catch (e) {
       throw new Error(`Can't parse source snippet: ${e.message}\n${source}`);
@@ -124,6 +120,7 @@ class SourceSnippet {
         t.program([path]),
         {
           comments: comments != null ? comments : true,
+          decoratorsBeforeExport: true,
         },
         this.sourceValue
       ).code
