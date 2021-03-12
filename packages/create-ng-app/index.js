@@ -7,6 +7,10 @@ class CreateNgAppTemplate extends TemplatePackage {
   async onBeforeApply() {
     const isInstalled = this.appContainer.getPackageVersions()[this.name];
 
+    console.log({
+      isDocker: isDocker(),
+    });
+
     if (!isInstalled) {
       if (!isDocker()) {
         await this.appContainer
