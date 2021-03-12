@@ -7,10 +7,6 @@ class CreateNgAppTemplate extends TemplatePackage {
   async onBeforeApply() {
     const isInstalled = this.appContainer.getPackageVersions()[this.name];
 
-    console.log({
-      isDocker: isDocker(),
-    });
-
     if (!isInstalled) {
       if (!isDocker()) {
         await this.appContainer
@@ -41,7 +37,11 @@ class CreateNgAppTemplate extends TemplatePackage {
       } else {
         // a workaround to avoid `Error: Cannot find module '../node_modules/@angular/cli/bin/postinstall/script.js'` until it gets fixed
         await this.appContainer.executeCommand(
-          'echo n | npm install -g @angular/cli'
+          'echo n | npm install -g @angular/cli',
+          [],
+          {
+            shell: true,
+          }
         );
         await this.appContainer.executeCommand(
           'ng',
