@@ -116,13 +116,17 @@ export class QueryRendererComponent {
           this.loading = false;
         }
 
-        const { onQueryLoad } =
-          window.parent.window['__cubejsPlayground'] || {};
-        if (typeof onQueryLoad === 'function') {
-          onQueryLoad({
-            resultSet,
-            error: this.error,
-          });
+        try {
+          const { onQueryLoad } =
+            window.parent.window['__cubejsPlayground'] || {};
+          if (typeof onQueryLoad === 'function') {
+            onQueryLoad({
+              resultSet,
+              error: this.error,
+            });
+          }
+        } catch (error) {
+          console.log(error);
         }
 
         if (resultSet) {

@@ -12,8 +12,8 @@ const chunksByLibrary = {
 
 const commonDependencies = [
   'react-dom',
-  '@cubejs-client/core',
-  '@cubejs-client/react',
+  ['@cubejs-client/core', '^0.26.45'],
+  ['@cubejs-client/react', '^0.26.45'],
   'antd',
 ];
 
@@ -74,6 +74,10 @@ ReactDOM.render(<ChartRenderer />, rootElement);
 }
 
 export function getDependencies(chartingLibrary) {
+  if (!chartingLibrary) {
+    throw new Error('`chartingLibrary` param is undefined');
+  }
+
   const { getImports } = chunksByLibrary[`${chartingLibrary}Charts`];
 
   return [
