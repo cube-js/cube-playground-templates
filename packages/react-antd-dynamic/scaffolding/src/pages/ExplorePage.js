@@ -51,7 +51,6 @@ const ExplorePage = withRouter(({ history, location }) => {
       />
       <ExploreQueryBuilder
         vizState={finalVizState}
-        setVizState={setVizState}
         chartExtra={[
           <Button
             key="button"
@@ -62,6 +61,7 @@ const ExplorePage = withRouter(({ history, location }) => {
             {itemId ? 'Update' : 'Add to Dashboard'}
           </Button>,
         ]}
+        onVizStateChanged={setVizState}
       />
     </div>
   );

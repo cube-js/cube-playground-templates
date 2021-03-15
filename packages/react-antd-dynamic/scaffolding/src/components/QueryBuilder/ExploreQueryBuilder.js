@@ -14,15 +14,15 @@ import Pivot from './Pivot/Pivot';
 export default function ExploreQueryBuilder({
   vizState,
   cubejsApi,
-  setVizState,
   chartExtra,
+  onVizStateChanged,
 }) {
   return (
     <QueryBuilder
-      vizState={vizState}
-      setVizState={setVizState}
+      initialVizState={vizState}
       cubejsApi={cubejsApi}
       wrapWithQueryRenderer={false}
+      onVizStateChanged={onVizStateChanged}
       render={({
         validatedQuery,
         isQueryPresent,
@@ -203,14 +203,12 @@ export default function ExploreQueryBuilder({
 
 ExploreQueryBuilder.propTypes = {
   vizState: PropTypes.object,
-  setVizState: PropTypes.func,
   cubejsApi: PropTypes.object,
   chartExtra: PropTypes.array,
 };
 
 ExploreQueryBuilder.defaultProps = {
   vizState: {},
-  setVizState: null,
   cubejsApi: null,
   chartExtra: null,
 };
