@@ -1,33 +1,43 @@
-const { parse } = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
-const generator = require('@babel/generator').default;
-const prettier = require('prettier');
+
+const SourceSnippet = require('./SourceSnippet');
+const VueSourceSnippet = require('./VueSourceSnippet');
 
 class TargetSource {
-  constructor(fileName, source) {
-    this.fileName = fileName;
+  snippet = null;
 
+  imports = [];
+
+  definitions = [];
+
+  constructor(fileName, source) {
     this.source = source;
     this.fileName = fileName;
-    try {
-      this.ast = parse(source, {
-        sourceFilename: fileName,
-        sourceType: 'module',
-        plugins: ['jsx', 'typescript', 'classProperties', 'decorators-legacy'],
-      });
-    } catch (e) {
-      if (fileName.match(/\.([tj]sx?)$/)) {
-        throw new Error(`Can't parse ${fileName}: ${e.message}`);
-      }
-      console.warn(`Attempt to parse ${fileName} file`);
+
+    this.parseSourceCode();
+
+    if (this.snippet && this.ast) {
+      this.findAllImports();
+      this.findAllDefinitions();
+      this.findDefaultExport();
     }
-    this.findAllImports();
-    this.findAllDefinitions();
-    this.findDefaultExport();
+  }
+
+  get ast() {
+    return this.snippet.ast;
+  }
+
+  parseSourceCode() {
+    if (this.fileName.endsWith('.vue')) {
+      this.snippet = new VueSourceSnippet(this.source);
+    } else if (this.fileName.match(/\.([tj]sx?)$/)) {
+      this.snippet = new SourceSnippet(this.source);
+    } else {
+      console.log(`Skip parsing '${this.fileName}'. No parser found.`);
+    }
   }
 
   findAllImports() {
-    this.imports = [];
     traverse(this.ast, {
       ImportDeclaration: (path) => {
         this.imports.push(path);
@@ -46,7 +56,6 @@ class TargetSource {
   }
 
   findAllDefinitions() {
-    this.definitions = [];
     traverse(this.ast, {
       VariableDeclaration: (path) => {
         if (path.parent.type === 'Program') {
@@ -62,23 +71,11 @@ class TargetSource {
   }
 
   code() {
-    const code =
-      (this.ast &&
-        generator(
-          this.ast,
-          {
-            comments: true,
-            decoratorsBeforeExport: true,
-          },
-          this.source
-        ).code) ||
-      this.source;
-
-    return code;
+    return this.snippet.source;
   }
 
   formattedCode() {
-    return TargetSource.formatCode(
+    return SourceSnippet.formatCode(
       this.code(),
       this.fileName.match(/\.(tsx?)$/) ? 'typescript' : 'babel'
     );
@@ -86,7 +83,14 @@ class TargetSource {
 
   getImportDependencies() {
     return this.imports
-      .filter((i) => i.get('source').node.value.indexOf('.') !== 0)
+      .filter((i) => {
+        const { value } = i.get('source').node;
+        if (value.startsWith('.') || value.startsWith('@/')) {
+          return false;
+        }
+
+        return true;
+      })
       .map((i) => {
         const importName = i.get('source').node.value.split('/');
         const dependency =
@@ -95,18 +99,6 @@ class TargetSource {
             : importName[0];
         return dependency;
       });
-  }
-
-  static formatCode(code, parser = 'babel') {
-    try {
-      return prettier.format(code, {
-        parser,
-        singleQuote: true,
-      });
-    } catch (error) {
-      console.warn('prettier error');
-      return code;
-    }
   }
 }
 

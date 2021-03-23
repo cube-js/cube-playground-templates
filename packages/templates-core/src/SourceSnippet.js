@@ -2,10 +2,58 @@ const { parse } = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
 const t = require('@babel/types');
 const generator = require('@babel/generator').default;
-
-const TargetSource = require('./TargetSource');
+const prettier = require('prettier');
 
 class SourceSnippet {
+  static parse(source) {
+    try {
+      return parse(source, {
+        sourceType: 'module',
+        plugins: ['jsx', 'typescript', 'classProperties', 'decorators-legacy'],
+      });
+    } catch (e) {
+      throw new Error(`Can't parse source snippet: ${e.message}\n${source}`);
+    }
+  }
+
+  static importsByAst(ast) {
+    const imports = [];
+
+    traverse(ast, {
+      ImportDeclaration: (path) => {
+        imports.push(path);
+      },
+    });
+
+    return imports;
+  }
+
+  static definitionsByAst(ast) {
+    const definitions = [];
+
+    traverse(ast, {
+      VariableDeclaration: (path) => {
+        if (path.parent.type === 'Program') {
+          definitions.push(path);
+        }
+      },
+    });
+
+    return definitions;
+  }
+
+  static formatCode(code, parser = 'babel') {
+    try {
+      return prettier.format(code, {
+        parser,
+        singleQuote: true,
+      });
+    } catch (error) {
+      console.warn('prettier error');
+      return code;
+    }
+  }
+
   constructor(source = null, historySnippets = []) {
     if (source) {
       this.source = source;
@@ -30,17 +78,6 @@ class SourceSnippet {
 
     this.sourceValue = source;
     this.ast = SourceSnippet.parse(source);
-  }
-
-  static parse(source) {
-    try {
-      return parse(source, {
-        sourceType: 'module',
-        plugins: ['jsx', 'typescript', 'classProperties', 'decorators-legacy'],
-      });
-    } catch (e) {
-      throw new Error(`Can't parse source snippet: ${e.message}\n${source}`);
-    }
   }
 
   mergeImport(targetSource, importDeclaration) {
@@ -115,7 +152,7 @@ class SourceSnippet {
       path = path.node;
     }
 
-    return TargetSource.formatCode(
+    return SourceSnippet.formatCode(
       generator(
         t.program([path]),
         {
@@ -172,34 +209,8 @@ class SourceSnippet {
     return SourceSnippet.importsByAst(this.ast);
   }
 
-  static importsByAst(ast) {
-    const chartImports = [];
-
-    traverse(ast, {
-      ImportDeclaration: (path) => {
-        chartImports.push(path);
-      },
-    });
-
-    return chartImports;
-  }
-
   findDefinitions() {
     return SourceSnippet.definitionsByAst(this.ast);
-  }
-
-  static definitionsByAst(ast) {
-    const definitions = [];
-
-    traverse(ast, {
-      VariableDeclaration: (path) => {
-        if (path.parent.type === 'Program') {
-          definitions.push(path);
-        }
-      },
-    });
-
-    return definitions;
   }
 
   mergeTo(targetSource) {
@@ -209,12 +220,13 @@ class SourceSnippet {
         .map((d) => d.get('declarations'))
         .reduce((a, b) => a.concat(b), [])
     );
-    const chartImports = this.findImports();
+    const imports = this.findImports();
     const definitions = this.findDefinitions();
-    chartImports.forEach((i) => this.mergeImport(targetSource, i));
+    imports.forEach((i) => this.mergeImport(targetSource, i));
     definitions.forEach((d) =>
       this.mergeDefinition(targetSource, d, historyDefinitions)
     );
+
     targetSource.findAllImports();
     targetSource.findAllDefinitions();
   }

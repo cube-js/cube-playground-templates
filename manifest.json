@@ -18,11 +18,28 @@
       }
     },
     {
+      "name": "create-vue-app",
+      "version": "0.0.1",
+      "installsTo": null,
+      "receives": {
+        "vue-ui-framework": "0.0.1"
+      }
+    },
+    {
       "name": "dev-cra",
       "version": "0.0.1",
       "installsTo": null,
       "receives": {
         "react-ui-framework": "0.0.1",
+        "single-chart": "0.0.1"
+      }
+    },
+    {
+      "name": "dev-cva",
+      "version": "0.0.1",
+      "installsTo": null,
+      "receives": {
+        "vue-ui-framework": "0.0.1",
         "single-chart": "0.0.1"
       }
     },
@@ -205,6 +222,32 @@
       "installsTo": {
         "single-chart": "0.0.1"
       }
+    },
+    {
+      "name": "vue-ui-test",
+      "version": "0.0.1",
+      "installsTo": {
+        "vue-ui-framework": "0.0.1"
+      }
+    },
+    {
+      "name": "vue-vuetify-dynamic",
+      "version": "0.0.1",
+      "installsTo": {
+        "vue-ui-framework": "0.0.1"
+      },
+      "receives": {
+        "vue-chart": "0.0.1",
+        "vue-table": "0.0.1",
+        "vue-transport": "0.0.1"
+      }
+    },
+    {
+      "name": "vue-chartkick-charts",
+      "version": "0.0.1",
+      "installsTo": {
+        "vue-chart": "0.0.1"
+      }
     }
   ],
   "templates": [
@@ -267,6 +310,22 @@
         "ng-material-dynamic",
         "ng-credentials",
         "ng2-charts"
+      ]
+    },
+    {
+      "name": "Test!!!",
+      "coverUrl": "https://habrastorage.org/webt/sv/fa/xn/svfaxnl2uh7vozipy4n5to6qpqm.png",
+      "description": "Vue dashboard",
+      "templatePackages": ["dev-cva", "vue-ui-test"]
+    },
+    {
+      "name": "Dynamic Vue Vuetify UI Dashboard",
+      "coverUrl": "https://habrastorage.org/webt/sv/fa/xn/svfaxnl2uh7vozipy4n5to6qpqm.png",
+      "description": "Vue dashboard",
+      "templatePackages": [
+        "create-vue-app",
+        "vue-vuetify-dynamic",
+        "vue-chartkick-charts"
       ]
     }
   ]
