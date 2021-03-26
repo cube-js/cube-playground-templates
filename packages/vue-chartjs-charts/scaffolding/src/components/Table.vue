@@ -10,13 +10,12 @@
 <script>
 export default {
   name: 'Table',
-  props: ['resultSet'],
+  props: ['data'],
   mounted() {},
   data: () => ({}),
   computed: {
     headers() {
-      const data = this.resultSet.tablePivot();
-
+      const data = this.data.tablePivot();
       return Object.keys(data[0]).map((key) => {
         return {
           text: key,
@@ -27,7 +26,7 @@ export default {
       });
     },
     items() {
-      const data = this.resultSet.tablePivot();
+      const data = this.data.tablePivot();
       return data.map((key) => {
         return key;
       });

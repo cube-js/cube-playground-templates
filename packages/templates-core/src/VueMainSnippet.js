@@ -40,6 +40,45 @@ class VueMainSnippet extends SourceSnippet {
         }
       },
     });
+
+    let targetPropertiesRef = null;
+    const optionsArgSet = new Set();
+
+    this.traverseVueOptions(targetSource.ast, (node) => {
+      const [optionsArg] = node.arguments;
+      if (optionsArg && t.isObjectExpression(optionsArg)) {
+        targetPropertiesRef = optionsArg.properties;
+        optionsArg.properties.forEach((node) => {
+          optionsArgSet.add(SourceSnippet.astToCode(node));
+        });
+      }
+    });
+
+    this.traverseVueOptions(this.ast, (node) => {
+      const [optionsArg] = node.arguments;
+      if (optionsArg && t.isObjectExpression(optionsArg)) {
+        optionsArg.properties.forEach((prop) => {
+          if (!optionsArgSet.has(SourceSnippet.astToCode(prop))) {
+            targetPropertiesRef.push(prop);
+          }
+        });
+      }
+    });
+  }
+
+  traverseVueOptions(ast, cb) {
+    traverse(ast, {
+      CallExpression: (path) => {
+        if (
+          t.isMemberExpression(path.node.callee) &&
+          t.isNewExpression(path.node.callee.object) &&
+          t.isIdentifier(path.node.callee.object.callee) &&
+          path.node.callee.object.callee.name === 'Vue'
+        ) {
+          cb(path.node.callee.object);
+        }
+      },
+    });
   }
 }
 

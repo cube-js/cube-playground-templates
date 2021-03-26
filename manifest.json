@@ -5,8 +5,7 @@
       "version": "0.0.1",
       "installsTo": null,
       "receives": {
-        "react-ui-framework": "0.0.1",
-        "single-chart": "0.0.1"
+        "react-ui-framework": "0.0.1"
       }
     },
     {
@@ -30,8 +29,7 @@
       "version": "0.0.1",
       "installsTo": null,
       "receives": {
-        "react-ui-framework": "0.0.1",
-        "single-chart": "0.0.1"
+        "react-ui-framework": "0.0.1"
       }
     },
     {
@@ -40,7 +38,7 @@
       "installsTo": null,
       "receives": {
         "vue-ui-framework": "0.0.1",
-        "single-chart": "0.0.1"
+        "vue-chart": "0.0.1"
       }
     },
     {
@@ -48,8 +46,7 @@
       "version": "0.0.1",
       "installsTo": null,
       "receives": {
-        "ng-ui-framework": "0.0.1",
-        "single-chart": "0.0.1"
+        "ng-ui-framework": "0.0.1"
       }
     },
     {
@@ -59,6 +56,15 @@
       "receives": {
         "react-chart": "0.0.1",
         "react-table": "0.0.1"
+      }
+    },
+    {
+      "name": "vue-charting-library",
+      "version": "0.0.1",
+      "installsTo": null,
+      "receives": {
+        "vue-chart": "0.0.1",
+        "vue-table": "0.0.1"
       }
     },
     {
@@ -79,6 +85,17 @@
       },
       "receives": {
         "credentials": "0.0.1"
+      }
+    },
+    {
+      "name": "vue-charts",
+      "version": "0.0.1",
+      "installsTo": {
+        "vue-ui-framework": "0.0.1"
+      },
+      "receives": {
+        "credentials": "0.0.1",
+        "vue-chart": "0.0.1"
       }
     },
     {
@@ -210,20 +227,6 @@
       }
     },
     {
-      "name": "react-bizcharts-line",
-      "version": "0.0.1",
-      "installsTo": {
-        "single-chart": "0.0.1"
-      }
-    },
-    {
-      "name": "react-bizcharts-bar",
-      "version": "0.0.1",
-      "installsTo": {
-        "single-chart": "0.0.1"
-      }
-    },
-    {
       "name": "vue-ui-test",
       "version": "0.0.1",
       "installsTo": {
@@ -246,7 +249,16 @@
       "name": "vue-chartkick-charts",
       "version": "0.0.1",
       "installsTo": {
-        "vue-chart": "0.0.1"
+        "vue-chart": "0.0.1",
+        "vue-ui-framework": "0.0.1"
+      }
+    },
+    {
+      "name": "vue-chartjs-charts",
+      "version": "0.0.1",
+      "installsTo": {
+        "vue-chart": "0.0.1",
+        "vue-ui-framework": "0.0.1"
       }
     }
   ],
@@ -313,15 +325,9 @@
       ]
     },
     {
-      "name": "Test!!!",
-      "coverUrl": "https://habrastorage.org/webt/sv/fa/xn/svfaxnl2uh7vozipy4n5to6qpqm.png",
-      "description": "Vue dashboard",
-      "templatePackages": ["dev-cva", "vue-ui-test"]
-    },
-    {
       "name": "Dynamic Vue Vuetify UI Dashboard",
       "coverUrl": "https://habrastorage.org/webt/sv/fa/xn/svfaxnl2uh7vozipy4n5to6qpqm.png",
-      "description": "Vue dashboard",
+      "description": "Use this template to create a dynamic dashboard application with Vue, Vuetify and Chartkick charts. It comes with a dynamic query builder and Apollo GraphQL client. Use it when you want to allow users to edit dashboards.",
       "templatePackages": [
         "create-vue-app",
         "vue-vuetify-dynamic",

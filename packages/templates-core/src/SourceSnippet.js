@@ -54,6 +54,16 @@ class SourceSnippet {
     }
   }
 
+  static astToCode(ast, source = '') {
+    return generator(
+      ast,
+      {
+        decoratorsBeforeExport: true,
+      },
+      source
+    ).code;
+  }
+
   constructor(source = null, historySnippets = []) {
     if (source) {
       this.source = source;
@@ -62,13 +72,7 @@ class SourceSnippet {
   }
 
   get source() {
-    return generator(
-      this.ast,
-      {
-        decoratorsBeforeExport: true,
-      },
-      this.sourceValue
-    ).code;
+    return SourceSnippet.astToCode(this.ast, this.sourceValue);
   }
 
   set source(source) {

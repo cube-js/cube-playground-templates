@@ -1,70 +1,103 @@
 <template>
-  <div class="chart-renderer" v-if="resultSet">
-    <line-chart
-      legend="bottom"
-      v-if="chartType === 'line'"
-      :data="series(resultSet)"
-    ></line-chart>
+  <div class="chart-renderer" style="height: 400px" v-if="resultSet">
+    <component
+      v-if="componentType"
+      :is="componentType"
+      :data="data(resultSet)"
+      height="400px"
+    ></component>
 
-    <area-chart
-      legend="bottom"
-      v-if="chartType === 'area'"
-      :data="series(resultSet)"
-    ></area-chart>
+    <Table v-if="chartType === 'table'" :result-set="resultSet"></Table>
 
-    <pie-chart v-if="chartType === 'pie'" :data="pairs(resultSet)"></pie-chart>
-
-    <column-chart
-      v-if="chartType === 'bar'"
-      :data="seriesPairs(resultSet)"
-    ></column-chart>
-
-    <Table v-if="chartType === 'table'" :data="resultSet"></Table>
-
-    <div v-if="chartType === 'number'">
-      <div v-for="item in resultSet.series()" :key="item.key">
+    <div
+      v-if="chartType === 'number'"
+      class="number-container"
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        flex-direction: column;
+      "
+    >
+      <div
+        v-for="item in resultSet.series()"
+        :key="item.key"
+        style="font-size: 24px"
+      >
         {{ item.series[0].value }}
       </div>
     </div>
   </div>
 </template>
-
 <script>
-import { ResultSet } from '@cubejs-client/core';
-
+import cubejs from '@cubejs-client/core';
+import { QueryRenderer } from '@cubejs-client/vue';
 import Table from './Table';
+
+const cubejsApi = cubejs('token', {
+  apiUrl: 'http://localhost:4000/cubejs-api/v1',
+});
 
 export default {
   name: 'ChartRenderer',
-  props: {
-    chartType: {
-      type: String,
-      required: true,
-      default: () => 'line',
-    },
-    resultSet: {
-      type: ResultSet,
-      required: true,
-    },
-  },
+
+  props: ['chartType', 'resultSet'],
+
   components: {
+    QueryRenderer,
     Table,
   },
+
+  computed: {
+    componentType() {
+      if (this.chartType === 'table' || this.chartType === 'number') {
+        return null;
+      }
+
+      return [
+        this.chartType === 'bar' ? 'column' : this.chartType,
+        '-chart',
+      ].join('');
+    },
+  },
+
   methods: {
+    data(resultSet) {
+      if (['line', 'area'].includes(this.chartType)) {
+        return this.series(resultSet);
+      }
+
+      if (this.chartType === 'pie') {
+        return this.pairs(resultSet);
+      }
+
+      if (this.chartType === 'bar') {
+        return this.seriesPairs(resultSet);
+      }
+    },
+
     series(resultSet) {
+      if (!resultSet) {
+        return [];
+      }
       const seriesNames = resultSet.seriesNames();
       const pivot = resultSet.chartPivot();
       const series = [];
-
       seriesNames.forEach((e) => {
         const data = pivot.map((p) => [p.x, p[e.key]]);
-        series.push({ name: e.key, data });
+        series.push({
+          name: e.key,
+          data,
+        });
       });
       return series;
     },
+
     pairs(resultSet) {
       return resultSet.series()[0].series.map((item) => [item.x, item.value]);
     },
+
     seriesPairs(resultSet) {
       return resultSet.series().map((seriesItem) => ({
         name: seriesItem.title,
@@ -74,9 +107,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.chart-renderer {
-  width: 100%;
-}
-</style>
