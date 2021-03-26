@@ -1,9 +1,11 @@
 const R = require('ramda');
 const semver = require('semver');
-const traverse = require('@babel/traverse').default;
-const { parse } = require('@babel/parser');
+const path = require('path');
+// const traverse = require('@babel/traverse').default;
+// const { parse } = require('@babel/parser');
 
 const SourceSnippet = require('./SourceSnippet');
+const VueSourceSnippet = require('./VueSourceSnippet');
 const CssSourceSnippet = require('./CssSourceSnippet');
 const HtmlSourceSnippet = require('./HtmlSourceSnippet');
 const CssTargetSource = require('./CssTargetSource');
@@ -85,7 +87,7 @@ class TemplatePackage {
 
             let targetSource = sourceContainer.getTargetSource(scaffoldingFile);
 
-            if (!targetSource) {
+            if (targetSource === undefined) {
               targetSource = this.createTargetSource(
                 scaffoldingFile,
                 sourceContainer.fileContent[scaffoldingFile] ||
@@ -94,7 +96,7 @@ class TemplatePackage {
               sourceContainer.addTargetSource(scaffoldingFile, targetSource);
             }
 
-            if (scaffoldingFile.match(/\.([tj]sx?|html|css)$/)) {
+            if (scaffoldingFile.match(/\.([tj]sx?|html|css|vue)$/)) {
               const snippet =
                 this.fileToSnippet[scaffoldingFile] ||
                 this.createSourceSnippet(
@@ -104,9 +106,28 @@ class TemplatePackage {
                 );
 
               snippet.mergeTo(targetSource);
+
+              if (
+                targetSource != null &&
+                targetSource instanceof TargetSource
+              ) {
+                sourceContainer.addImportDependencies(
+                  Object.fromEntries(
+                    targetSource
+                      .getImportDependencies()
+                      .map((d) => [d, 'latest'])
+                  )
+                );
+              }
+
               sourceContainer.add(
                 scaffoldingFile,
                 targetSource.formattedCode()
+              );
+            } else {
+              sourceContainer.addFileToMove(
+                path.join(this.scaffoldingPath, scaffoldingFile),
+                scaffoldingFile
               );
             }
           }
@@ -119,9 +140,11 @@ class TemplatePackage {
       return new CssTargetSource(fileName, content);
     } else if (fileName.match(/\.html$/)) {
       return new HtmlTargetSource(fileName, content);
-    } else {
+    } else if (fileName.match(/\.([jt]s|vue)$/)) {
       return new TargetSource(fileName, content);
     }
+
+    return null;
   }
 
   createSourceSnippet(fileName, source, historySnippets = []) {
@@ -129,9 +152,11 @@ class TemplatePackage {
       return new HtmlSourceSnippet(source);
     } else if (fileName.match(/\.css$/)) {
       return new CssSourceSnippet(source);
-    } else {
-      return new SourceSnippet(source, historySnippets);
+    } else if (fileName.match(/\.vue$/)) {
+      return new VueSourceSnippet(source, historySnippets);
     }
+
+    return new SourceSnippet(source, historySnippets);
   }
 
   async onBeforeApply() {}
@@ -170,44 +195,7 @@ class TemplatePackage {
   }
 
   importDependencies() {
-    const allImports = R.toPairs(this.templateSources)
-      .filter(([fileName]) => fileName.match(/\.[jt]s$/))
-      .map(([fileName, content]) => {
-        const imports = [];
-
-        const ast = parse(content, {
-          sourceFilename: fileName,
-          sourceType: 'module',
-          plugins: [
-            'jsx',
-            'typescript',
-            'classProperties',
-            'decorators-legacy',
-          ],
-        });
-
-        traverse(ast, {
-          ImportDeclaration(currentPath) {
-            imports.push(currentPath);
-          },
-        });
-        return imports;
-      })
-      .reduce((a, b) => a.concat(b), []);
-
-    const dependencies = allImports
-      .filter((i) => i.get('source').node.value.indexOf('.') !== 0)
-      .map((i) => {
-        const importName = i.get('source').node.value.split('/');
-        const dependency =
-          importName[0].indexOf('@') === 0
-            ? [importName[0], importName[1]].join('/')
-            : importName[0];
-        return this.withPeerDependencies(dependency);
-      })
-      .reduce((a, b) => ({ ...a, ...b }), {});
-
-    return dependencies || {};
+    return {};
   }
 
   withPeerDependencies(dependency) {
