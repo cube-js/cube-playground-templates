@@ -4,13 +4,11 @@ const SourceSnippet = require('./SourceSnippet');
 const VueSourceSnippet = require('./VueSourceSnippet');
 
 class TargetSource {
-  snippet = null;
-
-  imports = [];
-
-  definitions = [];
-
   constructor(fileName, source) {
+    this.snippet = null;
+    this.imports = [];
+    this.definitions = [];
+
     this.source = source;
     this.fileName = fileName;
 

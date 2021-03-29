@@ -1,8 +1,6 @@
 const R = require('ramda');
 const semver = require('semver');
 const path = require('path');
-// const traverse = require('@babel/traverse').default;
-// const { parse } = require('@babel/parser');
 
 const SourceSnippet = require('./SourceSnippet');
 const VueSourceSnippet = require('./VueSourceSnippet');
@@ -112,7 +110,7 @@ class TemplatePackage {
                 targetSource instanceof TargetSource
               ) {
                 sourceContainer.addImportDependencies(
-                  Object.fromEntries(
+                  R.fromPairs(
                     targetSource
                       .getImportDependencies()
                       .map((d) => [d, 'latest'])

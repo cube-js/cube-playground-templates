@@ -5,12 +5,6 @@ const t = require('@babel/types');
 const SourceSnippet = require('./SourceSnippet');
 
 class VueSourceSnippet extends SourceSnippet {
-  scriptSource = null;
-
-  templateSource = null;
-
-  styleSource = null;
-
   static parseTagContent(tagName, content, preserveWrapper = false) {
     const regex = new RegExp(
       `<${tagName}[^>]{0,}>([\\s\\S]+)<\/${tagName}>`,
@@ -24,6 +18,8 @@ class VueSourceSnippet extends SourceSnippet {
 
   constructor(source = null, historySnippets = []) {
     super(VueSourceSnippet.parseTagContent('script', source), historySnippets);
+
+    this.scriptSource = null;
 
     if (source) {
       this.templateSource = VueSourceSnippet.parseTagContent(
