@@ -36,6 +36,8 @@ class TargetSource {
   }
 
   findAllImports() {
+    this.imports = [];
+
     traverse(this.ast, {
       ImportDeclaration: (path) => {
         this.imports.push(path);
@@ -54,6 +56,8 @@ class TargetSource {
   }
 
   findAllDefinitions() {
+    this.definitions = [];
+
     traverse(this.ast, {
       VariableDeclaration: (path) => {
         if (path.parent.type === 'Program') {

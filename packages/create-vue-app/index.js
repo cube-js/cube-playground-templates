@@ -17,11 +17,9 @@ class CreateNgAppTemplate extends TemplatePackage {
     if (!isInstalled) {
       await this.appContainer
         .executeCommand(
-          // todo: uncomment
-          // `npx @vue/cli create -m npm -n -d ${path.basename(
-          //   this.appContainer.appPath
-          // )}`,
-          `vue create -m npm -n -d ${path.basename(this.appContainer.appPath)}`,
+          `npx @vue/cli create -m npm -n -d ${path.basename(
+            this.appContainer.appPath
+          )}`,
           [],
           {
             cwd: path.dirname(this.appContainer.appPath),
