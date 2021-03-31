@@ -1,10 +1,11 @@
 <template>
   <div class="container" v-if="cubejsApi && chartingLibrary">
     <query-renderer
+      ref="queryRenderer"
       :cubejsApi="cubejsApi"
       :query="query"
       :chartType="chartType"
-      @queryLoad="handleQueryLoad"
+      @queryStatus="handleQueryStatusChange"
     >
       <template #default="{ resultSet }">
         <chart-renderer
@@ -31,8 +32,7 @@ window['__cubejsPlayground'] = {
 };
 
 const API_URL = 'http://localhost:4000/cubejs-api/v1';
-const CUBEJS_TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1OTQ2NjY4OTR9.0fdi5cuDZ2t3OSrPOMoc3B1_pwhnWj4ZmM3FHEX7Aus';
+const CUBEJS_TOKEN = 'your.token';
 
 export default {
   name: 'ChartContainer',
@@ -50,12 +50,10 @@ export default {
   },
 
   mounted() {
-    this.token = 'test.token';
-    this.query = {
-      measures: ['Sales.count'],
-    };
     window.addEventListener('__cubejsPlaygroundEvent', (event) => {
       const {
+        apiUrl,
+        token,
         query,
         chartingLibrary,
         chartType,
@@ -77,7 +75,10 @@ export default {
           this.chartType = chartType;
         }
       } else if (eventType === 'credentials') {
-        // updateVersion((prev) => prev + 1);
+        this.apiUrl = apiUrl;
+        this.token = token;
+      } else if (eventType === 'refetch') {
+        this.$refs.queryRenderer.load();
       }
     });
 
@@ -89,9 +90,14 @@ export default {
   },
 
   methods: {
-    handleQueryLoad({ resultSet, error }) {
-      const { onQueryLoad } = window.parent.window['__cubejsPlayground'] || {};
-      if (typeof onQueryLoad === 'function') {
+    handleQueryStatusChange({ isLoading, resultSet, error }) {
+      const { onQueryStart, onQueryLoad } =
+        (window.parent && window.parent.window['__cubejsPlayground']) || {};
+
+      if (isLoading && typeof onQueryStart === 'function') {
+        onQueryStart();
+      }
+      if (!isLoading && typeof onQueryLoad === 'function') {
         onQueryLoad({ resultSet, error });
       }
     },
@@ -104,7 +110,7 @@ export default {
   },
 
   watch: {
-    credentials(value) {
+    credentials() {
       this.cubejsApi = cubejs(this.token, {
         apiUrl: this.apiUrl,
       });

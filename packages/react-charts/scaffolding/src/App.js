@@ -20,6 +20,7 @@ const App = () => {
   const [library, setLibrary] = useState(null);
   const [chartType, setChartType] = useState(null);
   const [credetialsVersion, updateVersion] = useState(0);
+  const [refetchCounter, updateRefetchCounter] = useState(0);
 
   const cubejsApi = useMemo(() => {
     const data = window.parent.window['__cubejsPlayground'] || {};
@@ -68,6 +69,8 @@ const App = () => {
         }
       } else if (eventType === 'credentials') {
         updateVersion((prev) => prev + 1);
+      } else if (eventType === 'refetch') {
+        updateRefetchCounter((prev) => prev + 1);
       }
     });
   }, []);
@@ -80,6 +83,7 @@ const App = () => {
             renderFunction={libs[library][chartType]}
             query={query}
             pivotConfig={pivotConfig}
+            refetchCounter={refetchCounter}
           />
         ) : null}
       </div>
