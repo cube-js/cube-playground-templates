@@ -1,9 +1,10 @@
+const { spawnSync } = require('child_process');
+
 const { TemplatePackage } = require('../templates-core');
 
 class CreateReactAppTemplate extends TemplatePackage {
   importDependencies() {
     return {
-      ...super.importDependencies(),
       react: '16.14.0',
       'react-dom': '16.14.0',
     };
@@ -15,7 +16,8 @@ class CreateReactAppTemplate extends TemplatePackage {
     if (!isInstalled) {
       try {
         await this.appContainer.executeCommand('npx', [
-          'create-react-app',
+          // '-y',
+          'create-react-app@4.0.3',
           this.appContainer.appPath,
           '--use-npm',
         ]);
@@ -26,11 +28,22 @@ class CreateReactAppTemplate extends TemplatePackage {
           );
         }
 
-        // create-react-app may be installed globally, let's try
-        await this.appContainer.executeCommand('create-react-app', [
-          this.appContainer.appPath,
-          '--use-npm',
-        ]);
+        const child1 = spawnSync('create-react-app --version', { shell: true });
+        const child2 = spawnSync('npm view create-react-app version', {
+          shell: true,
+        });
+
+        if (
+          child1.stdout.toString() !== '' &&
+          child2.stdout.toString() !== child1.stdout.toString()
+        ) {
+          throw new Error(
+            'Create React App does not longer support global installation.\n\n' +
+              'Please remove any global installs with one of the following commands:\n' +
+              '- npm uninstall -g create-react-app\n' +
+              '- yarn global remove create-react-app\n\n'
+          );
+        }
       }
     }
   }

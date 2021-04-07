@@ -2,7 +2,8 @@
   <v-data-table
     :headers="headers"
     :items="items"
-    :items-per-page="50"
+    :items-per-page="10000"
+    :hide-default-footer="true"
     class="elevation-1"
   ></v-data-table>
 </template>
@@ -35,3 +36,8 @@ export default {
   },
 };
 </script>
+<style>
+html {
+  font-family: Roboto, sans-serif;
+}
+</style>

@@ -60,7 +60,13 @@ const TypeToChartComponent = {
         <Axis name="x" />
         <Axis name="measure" />
         <Tooltip crosshairs={{ type: 'y' }} />
-        <Geom type="area" position="x*measure" size={2} color="color" />
+        <Geom
+          type="area"
+          adjust="stack"
+          position="x*measure"
+          size={2}
+          color="color"
+        />
       </Chart>
     );
   },

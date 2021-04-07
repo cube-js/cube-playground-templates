@@ -1,10 +1,11 @@
-const { TemplatePackage } = require('../templates-core');
 const path = require('path');
+const fs = require('fs-extra');
+
+const { TemplatePackage } = require('../templates-core');
 
 class CreateNgAppTemplate extends TemplatePackage {
   importDependencies() {
     return {
-      ...super.importDependencies(),
       'node-sass': '^5.0.0',
       sass: '^1.32.8',
       'sass-loader': '^10.1.1',
@@ -15,8 +16,8 @@ class CreateNgAppTemplate extends TemplatePackage {
     const isInstalled = this.appContainer.getPackageVersions()[this.name];
 
     if (!isInstalled) {
-      await this.appContainer
-        .executeCommand(
+      try {
+        await this.appContainer.executeCommand(
           `npx @vue/cli create -m npm -n -d ${path.basename(
             this.appContainer.appPath
           )}`,
@@ -25,15 +26,15 @@ class CreateNgAppTemplate extends TemplatePackage {
             cwd: path.dirname(this.appContainer.appPath),
             shell: true,
           }
-        )
-        .catch((e) => {
-          if (e.toString().indexOf('ENOENT') !== -1) {
-            throw new Error(
-              `npx is not installed. Please update your npm: \`$ npm install -g npm\`.`
-            );
-          }
-          throw e;
-        });
+        );
+      } catch (error) {
+        if (error.toString().indexOf('ENOENT') !== -1) {
+          throw new Error(
+            `npx is not installed. Please update your npm: \`$ npm install -g npm\`.`
+          );
+        }
+        throw error;
+      }
     }
   }
 
@@ -56,6 +57,18 @@ class CreateNgAppTemplate extends TemplatePackage {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  async onBeforePersist() {
+    const packageJsonPath = path.join(
+      this.appContainer.appPath,
+      'package.json'
+    );
+
+    const json = fs.readJsonSync(packageJsonPath);
+    json.scripts.start = 'npm run serve';
+
+    fs.writeFileSync(packageJsonPath, JSON.stringify(json));
   }
 }
 

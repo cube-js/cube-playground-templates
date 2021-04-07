@@ -49,7 +49,6 @@ class SourceSnippet {
         singleQuote: true,
       });
     } catch (error) {
-      console.warn('prettier error');
       return code;
     }
   }
