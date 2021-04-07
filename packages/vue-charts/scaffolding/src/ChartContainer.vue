@@ -4,7 +4,7 @@
       :cubejsApi="cubejsApi"
       :query="query"
       :chartType="chartType"
-      @queryLoad="handleQueryLoad"
+      @queryStatus="handleQueryStatusChange"
     >
       <template #default="{ resultSet }">
         <chart-renderer
@@ -89,9 +89,14 @@ export default {
   },
 
   methods: {
-    handleQueryLoad({ resultSet, error }) {
-      const { onQueryLoad } = window.parent.window['__cubejsPlayground'] || {};
-      if (typeof onQueryLoad === 'function') {
+    handleQueryStatusChange({ isLoading, resultSet, error }) {
+      const { onQueryStart, onQueryLoad } =
+        window.parent.window['__cubejsPlayground'] || {};
+
+      if (isLoading && typeof onQueryStart === 'function') {
+        onQueryStart();
+      }
+      if (!isLoading && typeof onQueryLoad === 'function') {
         onQueryLoad({ resultSet, error });
       }
     },

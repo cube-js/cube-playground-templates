@@ -31,13 +31,8 @@
   </div>
 </template>
 <script>
-import cubejs from '@cubejs-client/core';
 import { QueryRenderer } from '@cubejs-client/vue';
 import Table from './Table';
-
-const cubejsApi = cubejs('token', {
-  apiUrl: 'http://localhost:4000/cubejs-api/v1',
-});
 
 export default {
   name: 'ChartRenderer',

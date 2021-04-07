@@ -64,9 +64,8 @@ class CreateNgAppTemplate extends TemplatePackage {
       this.appContainer.appPath,
       'package.json'
     );
-    const content = fs.readFileSync(packageJsonPath);
 
-    const json = JSON.parse(content.toString());
+    const json = fs.readJsonSync(packageJsonPath);
     json.scripts.start = 'npm run serve';
 
     fs.writeFileSync(packageJsonPath, JSON.stringify(json));
