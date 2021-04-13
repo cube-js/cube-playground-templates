@@ -74,6 +74,14 @@ export class QueryRendererComponent {
   constructor(private cubejsClient: CubejsClient) {}
 
   ngOnInit() {
+    let onQueryStart;
+    let onQueryLoad;
+
+    try {
+      onQueryStart = window.parent.window['__cubejsPlayground'].onQueryStart;
+      onQueryLoad = window.parent.window['__cubejsPlayground'].onQueryLoad;
+    } catch (_) {}
+
     combineLatest([
       this.cubeQuery$.pipe(
         switchMap((cubeQuery) => {
@@ -87,6 +95,10 @@ export class QueryRendererComponent {
             return of(null);
           }
           this.loading = true;
+
+          if (typeof onQueryStart === 'function') {
+            onQueryStart();
+          }
 
           return merge(
             of(null),
@@ -116,17 +128,11 @@ export class QueryRendererComponent {
           this.loading = false;
         }
 
-        try {
-          const { onQueryLoad } =
-            window.parent.window['__cubejsPlayground'] || {};
-          if (typeof onQueryLoad === 'function') {
-            onQueryLoad({
-              resultSet,
-              error: this.error,
-            });
-          }
-        } catch (error) {
-          console.log(error);
+        if (typeof onQueryLoad === 'function') {
+          onQueryLoad({
+            resultSet,
+            error: this.error,
+          });
         }
 
         if (resultSet) {
