@@ -8,6 +8,7 @@ class VueVuetifyDynamicTemplate extends TemplatePackage {
       'vue-cli-plugin-vuetify': '~2.0.6',
       'vuetify-loader': '^1.3.0',
       'graphql-tools': '5.0.0',
+      'chart.js': '^2.9.4',
     };
   }
 }
