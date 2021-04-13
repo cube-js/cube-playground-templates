@@ -31,9 +31,6 @@ window['__cubejsPlayground'] = {
   getDependencies,
 };
 
-const API_URL = 'http://localhost:4000/cubejs-api/v1';
-const CUBEJS_TOKEN = 'your.token';
-
 export default {
   name: 'ChartContainer',
 
@@ -43,13 +40,17 @@ export default {
       query: {},
       pivotConfig: null,
       chartType: 'line',
-      apiUrl: API_URL,
-      token: CUBEJS_TOKEN,
+      apiUrl: null,
+      token: null,
       cubejsApi: null,
     };
   },
 
   mounted() {
+    const data = window.parent.window['__cubejsPlayground'] || {};
+    this.apiUrl = data.apiUrl;
+    this.token = data.token;
+
     window.addEventListener('__cubejsPlaygroundEvent', (event) => {
       const {
         apiUrl,
