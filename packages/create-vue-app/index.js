@@ -66,7 +66,7 @@ class CreateNgAppTemplate extends TemplatePackage {
     );
 
     const json = fs.readJsonSync(packageJsonPath);
-    json.scripts.start = 'npm run serve';
+    json.scripts.start = 'vue-cli-service serve';
 
     fs.writeFileSync(packageJsonPath, JSON.stringify(json));
   }
