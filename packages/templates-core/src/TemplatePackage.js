@@ -209,7 +209,7 @@ class TemplatePackage {
     if (dependency === 'react-chartjs-2') {
       result = {
         ...result,
-        'chart.js': 'latest',
+        'chart.js': '^3.4.0',
       };
     }
     return result;

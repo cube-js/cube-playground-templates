@@ -3,7 +3,8 @@ const { TemplatePackage, AppSnippet } = require('@cubejs-templates/core');
 class ReactChartsTemplate extends TemplatePackage {
   importDependencies() {
     return {
-      'react-chartjs-2': '^2.11.2',
+      'react-chartjs-2': '^3.0.3',
+      'chart.js': '^3.4.0',
     };
   }
 }

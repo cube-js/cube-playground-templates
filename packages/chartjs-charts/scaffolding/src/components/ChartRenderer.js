@@ -1,61 +1,153 @@
+import React from 'react';
 import { Line, Bar, Pie } from 'react-chartjs-2';
+import { Row, Col, Statistic, Table } from 'antd';
 
-const COLORS_SERIES = ['#FF6492', '#141446', '#7A77FF'];
+import { useDeepMemo } from '../../../hooks';
+
+const COLORS_SERIES = [
+  '#5b8ff9',
+  '#5ad8a6',
+  '#5e7092',
+  '#f6bd18',
+  '#6f5efa',
+  '#6ec8ec',
+  '#945fb9',
+  '#ff9845',
+  '#299796',
+  '#fe99c3',
+];
+
+const PALE_COLORS_SERIES = [
+  '#d7e3fd',
+  '#daf5e9',
+  '#d6dbe4',
+  '#fdeecd',
+  '#dad8fe',
+  '#dbf1fa',
+  '#e4d7ed',
+  '#ffe5d2',
+  '#cce5e4',
+  '#ffe6f0',
+];
 
 const commonOptions = {
   maintainAspectRatio: false,
+  interaction: {
+    intersect: false,
+  },
+  plugins: {
+    legend: {
+      position: 'bottom',
+    },
+  },
+  scales: {
+    x: {
+      ticks: {
+        autoSkip: true,
+        maxRotation: 0,
+        padding: 12,
+        minRotation: 0,
+      },
+    },
+  },
 };
 
-const TypeToChartComponent = {
-  line: ({ resultSet }) => {
-    const data = {
-      labels: resultSet.categories().map((c) => c.category),
-      datasets: resultSet.series().map((s, index) => ({
+const LineChartRenderer = ({ resultSet }) => {
+  const datasets = useDeepMemo(
+    () =>
+      resultSet.series().map((s, index) => ({
         label: s.title,
         data: s.series.map((r) => r.value),
         borderColor: COLORS_SERIES[index],
+        pointRadius: 1,
+        tension: 0.1,
+        pointHoverRadius: 1,
+        borderWidth: 2,
+        tickWidth: 1,
         fill: false,
       })),
-    };
-    const options = {
-      ...commonOptions,
-    };
-    return <Line data={data} options={options} />;
-  },
-  bar: ({ resultSet }) => {
-    const data = {
-      labels: resultSet.categories().map((c) => c.category),
-      datasets: resultSet.series().map((s, index) => ({
+    [resultSet]
+  );
+
+  const data = {
+    labels: resultSet.categories().map((c) => c.category),
+    datasets,
+  };
+
+  return <Line type="line" data={data} options={commonOptions} />;
+};
+
+const BarChartRenderer = ({ resultSet, pivotConfig }) => {
+  const datasets = useDeepMemo(
+    () =>
+      resultSet.series().map((s, index) => ({
         label: s.title,
         data: s.series.map((r) => r.value),
         backgroundColor: COLORS_SERIES[index],
         fill: false,
       })),
-    };
-    const options = {
-      ...commonOptions,
-      scales: {
-        xAxes: [{ stacked: true }],
+    [resultSet]
+  );
+
+  const data = {
+    labels: resultSet.categories().map((c) => c.category),
+    datasets,
+  };
+  const options = {
+    ...commonOptions,
+    scales: {
+      x: {
+        ...commonOptions.scales.x,
+        stacked: !(pivotConfig.x || []).includes('measures'),
       },
-    };
-    return <Bar data={data} options={options} />;
-  },
-  area: ({ resultSet }) => {
-    const data = {
-      labels: resultSet.categories().map((c) => c.category),
-      datasets: resultSet.series().map((s, index) => ({
+    },
+  };
+  return <Bar type="bar" data={data} options={options} />;
+};
+
+const AreaChartRenderer = ({ resultSet }) => {
+  const datasets = useDeepMemo(
+    () =>
+      resultSet.series().map((s, index) => ({
         label: s.title,
         data: s.series.map((r) => r.value),
-        backgroundColor: COLORS_SERIES[index],
+        pointRadius: 1,
+        pointHoverRadius: 1,
+        backgroundColor: PALE_COLORS_SERIES[index],
+        borderWidth: 0,
+        fill: true,
+        tension: 0,
       })),
-    };
-    const options = {
-      ...commonOptions,
-      scales: {
-        yAxes: [{ stacked: true }],
+    [resultSet]
+  );
+
+  const data = {
+    labels: resultSet.categories().map((c) => c.category),
+    datasets,
+  };
+
+  const options = {
+    ...commonOptions,
+    scales: {
+      ...commonOptions.scales,
+      y: {
+        stacked: true,
       },
-    };
-    return <Line data={data} options={options} />;
+    },
+  };
+
+  return <Line type="area" data={data} options={options} />;
+};
+
+const TypeToChartComponent = {
+  line: (props) => {
+    return <LineChartRenderer {...props} />;
+  },
+  bar: (props) => {
+    return <BarChartRenderer {...props} />;
+  },
+  area: (props) => {
+    return <AreaChartRenderer {...props} />;
   },
   pie: ({ resultSet }) => {
     const data = {
@@ -67,9 +159,34 @@ const TypeToChartComponent = {
         hoverBackgroundColor: COLORS_SERIES,
       })),
     };
-    const options = {
-      ...commonOptions,
-    };
-    return <Pie data={data} options={options} />;
+
+    return <Pie type="pie" data={data} options={commonOptions} />;
+  },
+  number: ({ resultSet }) => {
+    return (
+      <Row
+        justify="center"
+        align="middle"
+        style={{
+          height: '100%',
+        }}
+      >
+        <Col>
+          {resultSet.seriesNames().map((s) => (
+            <Statistic value={resultSet.totalRow()[s.key]} />
+          ))}
+        </Col>
+      </Row>
+    );
+  },
+  table: ({ resultSet, pivotConfig }) => {
+    return (
+      <Table
+        pagination={false}
+        columns={resultSet.tableColumns(pivotConfig)}
+        dataSource={resultSet.tablePivot(pivotConfig)}
+      />
+    );
   },
 };
+export default TypeToChartComponent;
