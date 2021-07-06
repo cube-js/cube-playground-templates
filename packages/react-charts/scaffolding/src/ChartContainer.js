@@ -2,13 +2,15 @@ import { useEffect } from 'react';
 import { useCubeQuery } from '@cubejs-client/react';
 
 const ChartRenderer = ({
+  queryId,
   renderFunction,
   query,
   pivotConfig,
   refetchCounter,
 }) => {
-  const { onQueryStart, onQueryLoad, onQueryProgress } =
-    window.parent.window['__cubejsPlayground'] || {};
+  const { forQuery } = window.parent.window['__cubejsPlayground'] || {};
+
+  const { onQueryStart, onQueryLoad, onQueryProgress } = forQuery(queryId);
 
   const { isLoading, error, resultSet, progress, refetch } = useCubeQuery(
     query
@@ -16,7 +18,7 @@ const ChartRenderer = ({
 
   useEffect(() => {
     if (isLoading && typeof onQueryStart === 'function') {
-      onQueryStart();
+      onQueryStart(queryId);
     }
   }, [isLoading]);
 
@@ -47,12 +49,14 @@ const ChartRenderer = ({
 };
 
 const ChartContainer = ({
+  queryId,
   renderFunction,
   query,
   pivotConfig = null,
   refetchCounter,
 }) => (
   <ChartRenderer
+    queryId={queryId}
     renderFunction={renderFunction}
     query={query}
     pivotConfig={pivotConfig}

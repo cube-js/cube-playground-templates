@@ -21,8 +21,9 @@ export class MainComponent implements OnInit {
   chartType$ = new BehaviorSubject<any>('line');
 
   ngOnInit() {
-    const { onChartRendererReady } =
-      window.parent.window['__cubejsPlayground'] || {};
+    const queryId = window.location.hash.replace(/#\\/, '').split('=')[1];
+    const { forQuery } = window.parent.window['__cubejsPlayground'] || {};
+    const { onChartRendererReady } = forQuery(queryId);
     if (typeof onChartRendererReady === 'function') {
       onChartRendererReady();
     }

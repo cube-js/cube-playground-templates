@@ -78,8 +78,10 @@ export class QueryRendererComponent {
     let onQueryLoad;
 
     try {
-      onQueryStart = window.parent.window['__cubejsPlayground'].onQueryStart;
-      onQueryLoad = window.parent.window['__cubejsPlayground'].onQueryLoad;
+      const queryId = window.location.hash.replace(/#\\/, '').split('=')[1];
+      const { forQuery } = window.parent.window['__cubejsPlayground'] || {};
+      onQueryStart = forQuery(queryId).onQueryStart;
+      onQueryLoad = forQuery(queryId).onQueryLoad;
     } catch (_) {}
 
     combineLatest([

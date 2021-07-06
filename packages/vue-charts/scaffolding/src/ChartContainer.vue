@@ -36,6 +36,7 @@ export default {
 
   data() {
     return {
+      queryId: null,
       chartingLibrary: null,
       query: {},
       pivotConfig: null,
@@ -47,9 +48,18 @@ export default {
   },
 
   mounted() {
-    const data = window.parent.window['__cubejsPlayground'] || {};
+    this.queryId = window.location.hash.replace(/#\\/, '').split('=')[1];
+
+    const { forQuery, ...data } =
+      window.parent.window['__cubejsPlayground'] || {};
+
     this.apiUrl = data.apiUrl;
     this.token = data.token;
+
+    const { onChartRendererReady } = forQuery(this.queryId);
+    if (typeof onChartRendererReady === 'function') {
+      onChartRendererReady();
+    }
 
     window.addEventListener('__cubejsPlaygroundEvent', (event) => {
       const {
@@ -82,18 +92,12 @@ export default {
         this.$refs.queryRenderer.load();
       }
     });
-
-    const { onChartRendererReady } =
-      window.parent.window['__cubejsPlayground'] || {};
-    if (typeof onChartRendererReady === 'function') {
-      onChartRendererReady();
-    }
   },
 
   methods: {
     handleQueryStatusChange({ isLoading, resultSet, error }) {
-      const { onQueryStart, onQueryLoad } =
-        (window.parent && window.parent.window['__cubejsPlayground']) || {};
+      const { forQuery } = window.parent.window['__cubejsPlayground'] || {};
+      const { onQueryStart, onQueryLoad } = forQuery(this.queryId);
 
       if (isLoading && typeof onQueryStart === 'function') {
         onQueryStart();

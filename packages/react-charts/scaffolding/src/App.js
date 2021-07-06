@@ -15,6 +15,8 @@ window['__cubejsPlayground'] = {
 const libs = {};
 
 const App = () => {
+  const [_, queryId] = window.location.hash.replace(/#\\/, '').split('=');
+
   const [query, setQuery] = useState(null);
   const [pivotConfig, setPivotConfig] = useState(null);
   const [library, setLibrary] = useState(null);
@@ -31,10 +33,10 @@ const App = () => {
   }, [credetialsVersion]);
 
   useEffect(() => {
-    const { onChartRendererReady } =
-      window.parent.window['__cubejsPlayground'] || {};
-    if (typeof onChartRendererReady === 'function') {
-      onChartRendererReady();
+    const { forQuery } = window.parent.window['__cubejsPlayground'] || {};
+
+    if (typeof forQuery === 'function') {
+      forQuery(queryId).onChartRendererReady();
     }
   }, []);
 
@@ -80,6 +82,7 @@ const App = () => {
       <div className="App">
         {libs[library]?.[chartType] ? (
           <ChartContainer
+            queryId={queryId}
             renderFunction={libs[library][chartType]}
             query={query}
             pivotConfig={pivotConfig}
