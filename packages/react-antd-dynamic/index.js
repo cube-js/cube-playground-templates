@@ -7,7 +7,7 @@ const {
 class ReactAntdDynamicTemplate extends TemplatePackage {
   importDependencies() {
     return {
-      ...super.importDependencies(),
+      graphql: 'latest',
       'graphql-tools': '5.0.0',
     };
   }
