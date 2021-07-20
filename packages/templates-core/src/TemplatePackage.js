@@ -163,6 +163,11 @@ class TemplatePackage {
 
   async onAfterApply(sourceContainer) {
     sourceContainer.addImportDependencies(this.importDependencies());
+    sourceContainer.addImportDependencies(
+      Object.keys(sourceContainer.importDependencies)
+        .map((dependency) => this.withPeerDependencies(dependency))
+        .reduce((a, b) => ({ ...a, ...b }), {})
+    );
   }
 
   async applyPackage(sourceContainer) {
@@ -197,22 +202,19 @@ class TemplatePackage {
   }
 
   withPeerDependencies(dependency) {
-    let result = {
-      [dependency]: 'latest',
-    };
     if (dependency === 'graphql-tag') {
-      result = {
-        ...result,
+      return {
         graphql: 'latest',
       };
     }
+
     if (dependency === 'react-chartjs-2') {
-      result = {
-        ...result,
+      return {
         'chart.js': '^3.4.0',
       };
     }
-    return result;
+
+    return {};
   }
 }
 

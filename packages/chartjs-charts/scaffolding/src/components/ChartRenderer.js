@@ -1,7 +1,7 @@
 import React from 'react';
 import { Line, Bar, Pie } from 'react-chartjs-2';
 
-import { useDeepMemo } from '../../../hooks';
+import { useDeepMemo } from '../hooks';
 
 const COLORS_SERIES = [
   '#5b8ff9',
@@ -30,7 +30,7 @@ const PALE_COLORS_SERIES = [
 ];
 
 const commonOptions = {
-  maintainAspectRatio: false,
+  maintainAspectRatio: true,
   interaction: {
     intersect: false,
   },
@@ -69,7 +69,7 @@ const LineChartRenderer = ({ resultSet }) => {
   );
 
   const data = {
-    labels: resultSet.categories().map((c) => c.category),
+    labels: resultSet.categories().map((c) => c.x),
     datasets,
   };
 
@@ -89,7 +89,7 @@ const BarChartRenderer = ({ resultSet, pivotConfig }) => {
   );
 
   const data = {
-    labels: resultSet.categories().map((c) => c.category),
+    labels: resultSet.categories().map((c) => c.x),
     datasets,
   };
   const options = {
@@ -121,7 +121,7 @@ const AreaChartRenderer = ({ resultSet }) => {
   );
 
   const data = {
-    labels: resultSet.categories().map((c) => c.category),
+    labels: resultSet.categories().map((c) => c.x),
     datasets,
   };
 
@@ -150,7 +150,7 @@ const TypeToChartComponent = {
   },
   pie: ({ resultSet }) => {
     const data = {
-      labels: resultSet.categories().map((c) => c.category),
+      labels: resultSet.categories().map((c) => c.x),
       datasets: resultSet.series().map((s) => ({
         label: s.title,
         data: s.series.map((r) => r.value),

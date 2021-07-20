@@ -2,7 +2,7 @@ import React from 'react';
 import { Chart, Axis, Tooltip, Geom, PieChart } from 'bizcharts';
 import { Row, Col, Statistic, Table } from 'antd';
 
-import { useDeepMemo } from '../../../hooks';
+import { useDeepMemo } from '../hooks';
 
 const stackedChartData = (resultSet) => {
   const data = resultSet
