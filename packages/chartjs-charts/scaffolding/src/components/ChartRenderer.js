@@ -1,6 +1,5 @@
 import React from 'react';
 import { Line, Bar, Pie } from 'react-chartjs-2';
-import { Row, Col, Statistic, Table } from 'antd';
 
 import { useDeepMemo } from '../../../hooks';
 
@@ -161,32 +160,6 @@ const TypeToChartComponent = {
     };
 
     return <Pie type="pie" data={data} options={commonOptions} />;
-  },
-  number: ({ resultSet }) => {
-    return (
-      <Row
-        justify="center"
-        align="middle"
-        style={{
-          height: '100%',
-        }}
-      >
-        <Col>
-          {resultSet.seriesNames().map((s) => (
-            <Statistic value={resultSet.totalRow()[s.key]} />
-          ))}
-        </Col>
-      </Row>
-    );
-  },
-  table: ({ resultSet, pivotConfig }) => {
-    return (
-      <Table
-        pagination={false}
-        columns={resultSet.tableColumns(pivotConfig)}
-        dataSource={resultSet.tablePivot(pivotConfig)}
-      />
-    );
   },
 };
 export default TypeToChartComponent;

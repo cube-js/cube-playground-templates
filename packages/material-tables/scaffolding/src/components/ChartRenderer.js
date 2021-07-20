@@ -6,7 +6,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
 const TypeToChartComponent = {
-  number({ resultSet }) {
+  number: ({ resultSet }) => {
     return (
       <Typography
         variant="h4"
@@ -18,7 +18,7 @@ const TypeToChartComponent = {
       </Typography>
     );
   },
-  table({ resultSet }) {
+  table: ({ resultSet }) => {
     return (
       <Table aria-label="simple table">
         <TableHead>
