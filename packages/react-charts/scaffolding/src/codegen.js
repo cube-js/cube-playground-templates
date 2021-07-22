@@ -12,8 +12,8 @@ const chunksByLibrary = {
 
 const commonDependencies = [
   'react-dom',
-  ['@cubejs-client/core', '^0.27.26'],
-  ['@cubejs-client/react', '^0.27.30'],
+  '@cubejs-client/core',
+  '@cubejs-client/react',
   'antd',
 ];
 
