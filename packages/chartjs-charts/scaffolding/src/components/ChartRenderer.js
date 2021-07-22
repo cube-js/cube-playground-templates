@@ -1,7 +1,6 @@
 import React from 'react';
 import { Line, Bar, Pie } from 'react-chartjs-2';
-
-import { useDeepMemo } from '../hooks';
+import { useDeepCompareMemo } from 'use-deep-compare';
 
 const COLORS_SERIES = [
   '#5b8ff9',
@@ -52,7 +51,7 @@ const commonOptions = {
 };
 
 const LineChartRenderer = ({ resultSet }) => {
-  const datasets = useDeepMemo(
+  const datasets = useDeepCompareMemo(
     () =>
       resultSet.series().map((s, index) => ({
         label: s.title,
@@ -77,7 +76,7 @@ const LineChartRenderer = ({ resultSet }) => {
 };
 
 const BarChartRenderer = ({ resultSet, pivotConfig }) => {
-  const datasets = useDeepMemo(
+  const datasets = useDeepCompareMemo(
     () =>
       resultSet.series().map((s, index) => ({
         label: s.title,
@@ -105,7 +104,7 @@ const BarChartRenderer = ({ resultSet, pivotConfig }) => {
 };
 
 const AreaChartRenderer = ({ resultSet }) => {
-  const datasets = useDeepMemo(
+  const datasets = useDeepCompareMemo(
     () =>
       resultSet.series().map((s, index) => ({
         label: s.title,
@@ -139,14 +138,14 @@ const AreaChartRenderer = ({ resultSet }) => {
 };
 
 const TypeToChartComponent = {
-  line: (props) => {
-    return <LineChartRenderer {...props} />;
+  line: ({ resultSet }) => {
+    return <LineChartRenderer resultSet={resultSet} />;
   },
-  bar: (props) => {
-    return <BarChartRenderer {...props} />;
+  bar: ({ resultSet, pivotConfig }) => {
+    return <BarChartRenderer resultSet={resultSet} pivotConfig={pivotConfig} />;
   },
-  area: (props) => {
-    return <AreaChartRenderer {...props} />;
+  area: ({ resultSet }) => {
+    return <AreaChartRenderer resultSet={resultSet} />;
   },
   pie: ({ resultSet }) => {
     const data = {

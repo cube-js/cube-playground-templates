@@ -17,6 +17,7 @@
     "@cubejs-client/react": "^0.23.11",
     "@cubejs-templates/core": "latest",
     "bizcharts": "^4.0.14",
+    "fs-extra": "^10.0.0",
     "is-docker": "^2.1.1",
     "recharts": "^1.8.5"
   }

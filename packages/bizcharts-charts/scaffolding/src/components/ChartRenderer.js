@@ -1,8 +1,7 @@
 import React from 'react';
 import { Chart, Axis, Tooltip, Geom, PieChart } from 'bizcharts';
 import { Row, Col, Statistic, Table } from 'antd';
-
-import { useDeepMemo } from '../hooks';
+import { useDeepCompareMemo } from 'use-deep-compare';
 
 const stackedChartData = (resultSet) => {
   const data = resultSet
@@ -19,7 +18,9 @@ const stackedChartData = (resultSet) => {
 };
 
 const LineChartRenderer = ({ resultSet }) => {
-  const data = useDeepMemo(() => stackedChartData(resultSet), [resultSet]);
+  const data = useDeepCompareMemo(() => stackedChartData(resultSet), [
+    resultSet,
+  ]);
 
   return (
     <Chart
@@ -46,7 +47,7 @@ const LineChartRenderer = ({ resultSet }) => {
 };
 
 const BarChartRenderer = ({ resultSet }) => {
-  const data = useDeepMemo(() => stackedChartData(resultSet), [
+  const data = useDeepCompareMemo(() => stackedChartData(resultSet), [
     resultSet.serialize(),
   ]);
 
@@ -71,7 +72,7 @@ const BarChartRenderer = ({ resultSet }) => {
 };
 
 const AreaChartRenderer = ({ resultSet }) => {
-  const data = useDeepMemo(() => stackedChartData(resultSet), [
+  const data = useDeepCompareMemo(() => stackedChartData(resultSet), [
     resultSet.serialize(),
   ]);
 
@@ -106,7 +107,7 @@ const AreaChartRenderer = ({ resultSet }) => {
 };
 
 const PieChartRenderer = ({ resultSet }) => {
-  const [data, angleField] = useDeepMemo(() => {
+  const [data, angleField] = useDeepCompareMemo(() => {
     return [resultSet.chartPivot(), resultSet.series()];
   }, [resultSet]);
 
@@ -128,7 +129,7 @@ const PieChartRenderer = ({ resultSet }) => {
 };
 
 const TableRenderer = ({ resultSet, pivotConfig }) => {
-  const [tableColumns, dataSource] = useDeepMemo(() => {
+  const [tableColumns, dataSource] = useDeepCompareMemo(() => {
     return [
       resultSet.tableColumns(pivotConfig),
       resultSet.tablePivot(pivotConfig),

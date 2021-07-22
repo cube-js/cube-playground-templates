@@ -6,8 +6,10 @@ const {
 class AngularChartsTemplate extends TemplatePackage {
   importDependencies() {
     return {
-      ...super.importDependencies(),
-      '@angular/cdk': 'latest',
+      '@angular/animations': '~10.2.4',
+      '@angular/material': '~10.2.4',
+      '@angular/cdk': '~10.2.4',
+      'ngx-spinner': '^10.0.1',
     };
   }
 }
