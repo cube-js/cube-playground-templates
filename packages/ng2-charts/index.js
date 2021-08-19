@@ -3,7 +3,13 @@ const {
   QueryRendererSnippet,
 } = require('@cubejs-templates/core');
 
-class Ng2ChartsTemplate extends TemplatePackage {}
+class Ng2ChartsTemplate extends TemplatePackage {
+  importDependencies() {
+    return {
+      'chart.js': '^2.9.4',
+    };
+  }
+}
 
 module.exports = (context) =>
   new Ng2ChartsTemplate(context, {
