@@ -10,6 +10,7 @@ class AngularChartsTemplate extends TemplatePackage {
       '@angular/material': '~10.2.4',
       '@angular/cdk': '~10.2.4',
       'ngx-spinner': '^10.0.1',
+      'chart.js': '^2.9.4',
     };
   }
 }
