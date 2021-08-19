@@ -16,13 +16,13 @@ export default {
   data: () => ({}),
   computed: {
     headers() {
-      const data = this.resultSet.tablePivot();
+      const columns = this.resultSet.tableColumns();
 
-      return Object.keys(data[0]).map((key) => {
+      return columns.map(({ key, title }) => {
         return {
-          text: key,
+          text: title,
           align: 'start',
-          sortable: true,
+          sortable: false,
           value: key,
         };
       });

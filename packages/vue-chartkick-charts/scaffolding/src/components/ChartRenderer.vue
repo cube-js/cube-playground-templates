@@ -4,6 +4,7 @@
       v-if="componentType"
       :is="componentType"
       :data="data(resultSet)"
+      :stacked="isStacked"
       height="400px"
     ></component>
 
@@ -55,6 +56,9 @@ export default {
         '-chart',
       ].join('');
     },
+    isStacked() {
+      return this.chartType === 'area';
+    },
   },
 
   methods: {
@@ -82,7 +86,7 @@ export default {
       seriesNames.forEach((e) => {
         const data = pivot.map((p) => [p.x, p[e.key]]);
         series.push({
-          name: e.key,
+          name: e.title,
           data,
         });
       });
