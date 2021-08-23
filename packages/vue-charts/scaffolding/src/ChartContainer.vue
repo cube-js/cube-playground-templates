@@ -1,7 +1,6 @@
 <template>
   <div class="container" v-if="cubejsApi && chartingLibrary">
     <query-renderer
-      ref="queryRenderer"
       :cubejsApi="cubejsApi"
       :query="query"
       :chartType="chartType"
@@ -88,8 +87,6 @@ export default {
       } else if (eventType === 'credentials') {
         this.apiUrl = apiUrl;
         this.token = token;
-      } else if (eventType === 'refetch') {
-        this.$refs.queryRenderer.load();
       }
     });
   },

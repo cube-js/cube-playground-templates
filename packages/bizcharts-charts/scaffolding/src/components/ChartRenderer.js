@@ -1,6 +1,5 @@
 import React from 'react';
 import { Chart, Axis, Tooltip, Geom, PieChart } from 'bizcharts';
-import { Row, Col, Statistic, Table } from 'antd';
 import { useDeepCompareMemo } from 'use-deep-compare';
 
 const stackedChartData = (resultSet) => {
@@ -128,19 +127,6 @@ const PieChartRenderer = ({ resultSet }) => {
   );
 };
 
-const TableRenderer = ({ resultSet, pivotConfig }) => {
-  const [tableColumns, dataSource] = useDeepCompareMemo(() => {
-    return [
-      resultSet.tableColumns(pivotConfig),
-      resultSet.tablePivot(pivotConfig),
-    ];
-  }, [resultSet, pivotConfig]);
-
-  return (
-    <Table pagination={false} columns={tableColumns} dataSource={dataSource} />
-  );
-};
-
 const TypeToChartComponent = {
   line: ({ resultSet }) => {
     return <LineChartRenderer resultSet={resultSet} />;
@@ -153,27 +139,6 @@ const TypeToChartComponent = {
   },
   pie: ({ resultSet }) => {
     return <PieChartRenderer resultSet={resultSet} />;
-  },
-  number: ({ resultSet }) => {
-    return (
-      <Row
-        type="flex"
-        justify="center"
-        align="middle"
-        style={{
-          height: '100%',
-        }}
-      >
-        <Col>
-          {resultSet.seriesNames().map((s) => (
-            <Statistic value={resultSet.totalRow()[s.key]} />
-          ))}
-        </Col>
-      </Row>
-    );
-  },
-  table: ({ resultSet, pivotConfig }) => {
-    return <TableRenderer resultSet={resultSet} pivotConfig={pivotConfig} />;
   },
 };
 
