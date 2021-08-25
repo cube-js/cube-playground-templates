@@ -45,10 +45,12 @@ const LineChartRenderer = ({ resultSet }) => {
   );
 };
 
-const BarChartRenderer = ({ resultSet }) => {
+const BarChartRenderer = ({ resultSet, pivotConfig }) => {
   const data = useDeepCompareMemo(() => stackedChartData(resultSet), [
     resultSet.serialize(),
   ]);
+
+  const stacked = !(pivotConfig.x || []).includes('measures');
 
   return (
     <Chart
@@ -65,7 +67,12 @@ const BarChartRenderer = ({ resultSet }) => {
       <Axis name="x" />
       <Axis name="measure" />
       <Tooltip />
-      <Geom type="interval" position="x*measure" color="color" />
+      <Geom
+        type="interval"
+        position="x*measure"
+        color="color"
+        adjust={stacked ? 'stack' : 'dodge'}
+      />
     </Chart>
   );
 };
@@ -131,8 +138,8 @@ const TypeToChartComponent = {
   line: ({ resultSet }) => {
     return <LineChartRenderer resultSet={resultSet} />;
   },
-  bar: ({ resultSet }) => {
-    return <BarChartRenderer resultSet={resultSet} />;
+  bar: ({ resultSet, pivotConfig }) => {
+    return <BarChartRenderer resultSet={resultSet} pivotConfig={pivotConfig} />;
   },
   area: ({ resultSet }) => {
     return <AreaChartRenderer resultSet={resultSet} />;

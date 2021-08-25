@@ -91,12 +91,19 @@ const BarChartRenderer = ({ resultSet, pivotConfig }) => {
     labels: resultSet.categories().map((c) => c.x),
     datasets,
   };
+
+  const stacked = !(pivotConfig.x || []).includes('measures');
+
   const options = {
     ...commonOptions,
     scales: {
       x: {
         ...commonOptions.scales.x,
-        stacked: !(pivotConfig.x || []).includes('measures'),
+        stacked,
+      },
+      y: {
+        ...commonOptions.scales.y,
+        stacked,
       },
     },
   };
