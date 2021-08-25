@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { useCubeQuery } from '@cubejs-client/react';
+import { isQueryPresent } from '@cubejs-client/core';
+import { useDeepCompareEffect } from 'use-deep-compare';
 
 const ChartRenderer = ({
   queryId,
@@ -16,11 +18,15 @@ const ChartRenderer = ({
     query
   );
 
-  useEffect(() => {
-    if (isLoading && typeof onQueryStart === 'function') {
+  useDeepCompareEffect(() => {
+    if (
+      isLoading &&
+      isQueryPresent(query) &&
+      typeof onQueryStart === 'function'
+    ) {
       onQueryStart(queryId);
     }
-  }, [isLoading]);
+  }, [isLoading, query]);
 
   useEffect(() => {
     if (refetchCounter > 0) {
