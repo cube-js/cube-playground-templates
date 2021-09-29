@@ -71,6 +71,7 @@ const LineChartRenderer = ({ resultSet, onDrilldownRequested }) => {
       resultSet.series().map((s, index) => ({
         label: s.title,
         data: s.series.map((r) => r.value),
+        yValues: [s.key],
         borderColor: COLORS_SERIES[index],
         pointRadius: 1,
         tension: 0.1,
@@ -109,6 +110,7 @@ const BarChartRenderer = ({ resultSet, pivotConfig, onDrilldownRequested }) => {
       resultSet.series().map((s, index) => ({
         label: s.title,
         data: s.series.map((r) => r.value),
+        yValues: [s.key],
         backgroundColor: COLORS_SERIES[index],
         fill: false,
       })),
@@ -158,6 +160,7 @@ const AreaChartRenderer = ({ resultSet, onDrilldownRequested }) => {
       resultSet.series().map((s, index) => ({
         label: s.title,
         data: s.series.map((r) => r.value),
+        yValues: [s.key],
         pointRadius: 1,
         pointHoverRadius: 1,
         backgroundColor: PALE_COLORS_SERIES[index],
@@ -205,6 +208,7 @@ const PieChartRenderer = ({ resultSet, onDrilldownRequested }) => {
     datasets: resultSet.series().map((s) => ({
       label: s.title,
       data: s.series.map((r) => r.value),
+      yValues: [s.key],
       backgroundColor: COLORS_SERIES,
       hoverBackgroundColor: COLORS_SERIES,
     })),
