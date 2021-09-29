@@ -12,11 +12,27 @@ const ChartRenderer = ({
 }) => {
   const { forQuery } = window.parent.window['__cubejsPlayground'] || {};
 
-  const { onQueryStart, onQueryLoad, onQueryProgress } = forQuery(queryId);
+  const {
+    onQueryStart,
+    onQueryLoad,
+    onQueryProgress,
+    onQueryDrilldown,
+  } = forQuery(queryId);
 
   const { isLoading, error, resultSet, progress, refetch } = useCubeQuery(
     query
   );
+
+  const handleQueryDrilldownRequest = (xValues, yValues) => {
+    if (typeof onQueryDrilldown === 'function') {
+      onQueryDrilldown(
+        resultSet.drillDown({
+          xValues,
+          yValues,
+        })
+      );
+    }
+  };
 
   useDeepCompareEffect(() => {
     if (
@@ -51,7 +67,11 @@ const ChartRenderer = ({
     return null;
   }
 
-  return renderFunction({ resultSet, pivotConfig });
+  return renderFunction({
+    resultSet,
+    pivotConfig,
+    onDrilldownRequested: handleQueryDrilldownRequest,
+  });
 };
 
 const ChartContainer = ({
