@@ -23,13 +23,14 @@ const ChartRenderer = ({
     query
   );
 
-  const handleQueryDrilldownRequest = (xValues, yValues) => {
+  const handleQueryDrilldownRequest = ({ xValues, yValues }, pivotConfig) => {
     if (typeof onQueryDrilldown === 'function') {
       onQueryDrilldown(
         resultSet.drillDown({
           xValues,
           yValues,
-        })
+        }),
+        pivotConfig
       );
     }
   };

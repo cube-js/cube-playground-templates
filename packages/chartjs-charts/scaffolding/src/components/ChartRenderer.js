@@ -50,7 +50,12 @@ const commonOptions = {
   },
 };
 
-const useDrilldownCallback = ({ datasets, labels, onDrilldownRequested }) => {
+const useDrilldownCallback = ({
+  datasets,
+  labels,
+  onDrilldownRequested,
+  pivotConfig,
+}) => {
   return React.useCallback(
     (elements) => {
       if (elements.length <= 0) return;
@@ -58,7 +63,7 @@ const useDrilldownCallback = ({ datasets, labels, onDrilldownRequested }) => {
       const { yValues } = datasets[datasetIndex];
       const xValues = [labels[index]];
       if (typeof onDrilldownRequested === 'function') {
-        onDrilldownRequested(xValues, yValues);
+        onDrilldownRequested({ xValues, yValues }, pivotConfig);
       }
     },
     [datasets, labels, onDrilldownRequested]
@@ -142,6 +147,7 @@ const BarChartRenderer = ({ resultSet, pivotConfig, onDrilldownRequested }) => {
     datasets: data.datasets,
     labels: data.labels,
     onDrilldownRequested,
+    pivotConfig,
   });
 
   return (
