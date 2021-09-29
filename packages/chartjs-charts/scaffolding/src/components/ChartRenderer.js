@@ -144,6 +144,20 @@ const AreaChartRenderer = ({ resultSet }) => {
   return <Line type="area" data={data} options={options} />;
 };
 
+const PieChartRenderer = ({ resultSet }) => {
+  const data = {
+    labels: resultSet.categories().map((c) => c.x),
+    datasets: resultSet.series().map((s) => ({
+      label: s.title,
+      data: s.series.map((r) => r.value),
+      backgroundColor: COLORS_SERIES,
+      hoverBackgroundColor: COLORS_SERIES,
+    })),
+  };
+
+  return <Pie type="pie" data={data} options={commonOptions} />;
+};
+
 const TypeToChartComponent = {
   line: ({ resultSet }) => {
     return <LineChartRenderer resultSet={resultSet} />;
@@ -155,17 +169,7 @@ const TypeToChartComponent = {
     return <AreaChartRenderer resultSet={resultSet} />;
   },
   pie: ({ resultSet }) => {
-    const data = {
-      labels: resultSet.categories().map((c) => c.x),
-      datasets: resultSet.series().map((s) => ({
-        label: s.title,
-        data: s.series.map((r) => r.value),
-        backgroundColor: COLORS_SERIES,
-        hoverBackgroundColor: COLORS_SERIES,
-      })),
-    };
-
-    return <Pie type="pie" data={data} options={commonOptions} />;
+    return <PieChartRenderer resultSet={resultSet} />;
   },
 };
 export default TypeToChartComponent;
