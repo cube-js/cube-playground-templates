@@ -50,12 +50,33 @@ const commonOptions = {
   },
 };
 
-const LineChartRenderer = ({ resultSet }) => {
+const useDrilldownCallback = ({
+  datasets,
+  labels,
+  onDrilldownRequested,
+  pivotConfig,
+}) => {
+  return React.useCallback(
+    (elements) => {
+      if (elements.length <= 0) return;
+      const { datasetIndex, index } = elements[0];
+      const { yValues } = datasets[datasetIndex];
+      const xValues = [labels[index]];
+      if (typeof onDrilldownRequested === 'function') {
+        onDrilldownRequested({ xValues, yValues }, pivotConfig);
+      }
+    },
+    [datasets, labels, onDrilldownRequested]
+  );
+};
+
+const LineChartRenderer = ({ resultSet, onDrilldownRequested }) => {
   const datasets = useDeepCompareMemo(
     () =>
       resultSet.series().map((s, index) => ({
         label: s.title,
         data: s.series.map((r) => r.value),
+        yValues: [s.key],
         borderColor: COLORS_SERIES[index],
         pointRadius: 1,
         tension: 0.1,
@@ -72,15 +93,29 @@ const LineChartRenderer = ({ resultSet }) => {
     datasets,
   };
 
-  return <Line type="line" data={data} options={commonOptions} />;
+  const getElementAtEvent = useDrilldownCallback({
+    datasets: data.datasets,
+    labels: data.labels,
+    onDrilldownRequested,
+  });
+
+  return (
+    <Line
+      type="line"
+      data={data}
+      options={commonOptions}
+      getElementAtEvent={getElementAtEvent}
+    />
+  );
 };
 
-const BarChartRenderer = ({ resultSet, pivotConfig }) => {
+const BarChartRenderer = ({ resultSet, pivotConfig, onDrilldownRequested }) => {
   const datasets = useDeepCompareMemo(
     () =>
       resultSet.series().map((s, index) => ({
         label: s.title,
         data: s.series.map((r) => r.value),
+        yValues: [s.key],
         backgroundColor: COLORS_SERIES[index],
         fill: false,
       })),
@@ -107,15 +142,31 @@ const BarChartRenderer = ({ resultSet, pivotConfig }) => {
       },
     },
   };
-  return <Bar type="bar" data={data} options={options} />;
+
+  const getElementAtEvent = useDrilldownCallback({
+    datasets: data.datasets,
+    labels: data.labels,
+    onDrilldownRequested,
+    pivotConfig,
+  });
+
+  return (
+    <Bar
+      type="bar"
+      data={data}
+      options={options}
+      getElementAtEvent={getElementAtEvent}
+    />
+  );
 };
 
-const AreaChartRenderer = ({ resultSet }) => {
+const AreaChartRenderer = ({ resultSet, onDrilldownRequested }) => {
   const datasets = useDeepCompareMemo(
     () =>
       resultSet.series().map((s, index) => ({
         label: s.title,
         data: s.series.map((r) => r.value),
+        yValues: [s.key],
         pointRadius: 1,
         pointHoverRadius: 1,
         backgroundColor: PALE_COLORS_SERIES[index],
@@ -141,31 +192,83 @@ const AreaChartRenderer = ({ resultSet }) => {
     },
   };
 
-  return <Line type="area" data={data} options={options} />;
+  const getElementAtEvent = useDrilldownCallback({
+    datasets: data.datasets,
+    labels: data.labels,
+    onDrilldownRequested,
+  });
+
+  return (
+    <Line
+      type="area"
+      data={data}
+      options={options}
+      getElementAtEvent={getElementAtEvent}
+    />
+  );
+};
+
+const PieChartRenderer = ({ resultSet, onDrilldownRequested }) => {
+  const data = {
+    labels: resultSet.categories().map((c) => c.x),
+    datasets: resultSet.series().map((s) => ({
+      label: s.title,
+      data: s.series.map((r) => r.value),
+      yValues: [s.key],
+      backgroundColor: COLORS_SERIES,
+      hoverBackgroundColor: COLORS_SERIES,
+    })),
+  };
+
+  const getElementAtEvent = useDrilldownCallback({
+    datasets: data.datasets,
+    labels: data.labels,
+    onDrilldownRequested,
+  });
+
+  return (
+    <Pie
+      type="pie"
+      data={data}
+      options={commonOptions}
+      getElementAtEvent={getElementAtEvent}
+    />
+  );
 };
 
 const TypeToChartComponent = {
-  line: ({ resultSet }) => {
-    return <LineChartRenderer resultSet={resultSet} />;
+  line: ({ resultSet, onDrilldownRequested }) => {
+    return (
+      <LineChartRenderer
+        resultSet={resultSet}
+        onDrilldownRequested={onDrilldownRequested}
+      />
+    );
   },
-  bar: ({ resultSet, pivotConfig }) => {
-    return <BarChartRenderer resultSet={resultSet} pivotConfig={pivotConfig} />;
+  bar: ({ resultSet, pivotConfig, onDrilldownRequested }) => {
+    return (
+      <BarChartRenderer
+        resultSet={resultSet}
+        pivotConfig={pivotConfig}
+        onDrilldownRequested={onDrilldownRequested}
+      />
+    );
   },
-  area: ({ resultSet }) => {
-    return <AreaChartRenderer resultSet={resultSet} />;
+  area: ({ resultSet, onDrilldownRequested }) => {
+    return (
+      <AreaChartRenderer
+        resultSet={resultSet}
+        onDrilldownRequested={onDrilldownRequested}
+      />
+    );
   },
-  pie: ({ resultSet }) => {
-    const data = {
-      labels: resultSet.categories().map((c) => c.x),
-      datasets: resultSet.series().map((s) => ({
-        label: s.title,
-        data: s.series.map((r) => r.value),
-        backgroundColor: COLORS_SERIES,
-        hoverBackgroundColor: COLORS_SERIES,
-      })),
-    };
-
-    return <Pie type="pie" data={data} options={commonOptions} />;
+  pie: ({ resultSet, onDrilldownRequested }) => {
+    return (
+      <PieChartRenderer
+        resultSet={resultSet}
+        onDrilldownRequested={onDrilldownRequested}
+      />
+    );
   },
 };
 export default TypeToChartComponent;
