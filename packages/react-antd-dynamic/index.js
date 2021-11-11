@@ -9,6 +9,7 @@ class ReactAntdDynamicTemplate extends TemplatePackage {
     return {
       graphql: 'latest',
       'graphql-tools': '5.0.0',
+      'react-router': '5.2.1',
     };
   }
 }
