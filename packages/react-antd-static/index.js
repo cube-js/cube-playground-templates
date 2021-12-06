@@ -4,7 +4,14 @@ const {
   IndexSnippet,
 } = require('@cubejs-templates/core');
 
-class ReactAntdStaticTemplate extends TemplatePackage {}
+class ReactAntdStaticTemplate extends TemplatePackage {
+  importDependencies() {
+    return {
+      'react-router': '5.2.1',
+      'react-router-dom': '5.2.1',
+    };
+  }
+}
 
 module.exports = (context) =>
   new ReactAntdStaticTemplate(context, {
