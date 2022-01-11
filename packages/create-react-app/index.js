@@ -16,8 +16,7 @@ class CreateReactAppTemplate extends TemplatePackage {
     if (!isInstalled) {
       try {
         await this.appContainer.executeCommand('npx', [
-          // '-y',
-          'create-react-app@4.0.3',
+          'create-react-app',
           this.appContainer.appPath,
           '--use-npm',
         ]);
