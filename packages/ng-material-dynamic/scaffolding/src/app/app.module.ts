@@ -19,7 +19,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CubejsClientModule, QueryBuilderService } from '@cubejs-client/ngx';
-import { ChartsModule } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';
 import { HttpLink } from 'apollo-angular/http';
 import { APOLLO_OPTIONS } from 'apollo-angular';
 import { GridsterModule } from 'angular-gridster2';
@@ -77,7 +77,7 @@ const cubejsOptions = {
     MatIconModule,
     MatDividerModule,
     HttpClientModule,
-    ChartsModule,
+    NgChartsModule,
     DragDropModule,
     MatButtonToggleModule,
     MatTabsModule,

@@ -3,8 +3,7 @@ import { isQueryPresent, ResultSet } from '@cubejs-client/core';
 import { CubejsClient, TChartType } from '@cubejs-client/ngx';
 import { BehaviorSubject, combineLatest, of, merge } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-import { ChartDataSets, ChartOptions } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { ChartDataset, ChartOptions } from 'chart.js';
 import { getDisplayedColumns, flattenColumns } from './utils';
 
 @Component({
@@ -53,8 +52,8 @@ export class QueryRendererComponent {
   displayedColumns: string[] = [];
   tableData: any[] = [];
   columnTitles: string[] = [];
-  chartData: ChartDataSets[] = [];
-  chartLabels: Label[] = [];
+  chartData: ChartDataset[] = [];
+  chartLabels: any[] = [];
   chartOptions: ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,

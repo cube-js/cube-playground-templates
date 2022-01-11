@@ -7,7 +7,7 @@ import {
   ResultSet,
 } from '@cubejs-client/core';
 import { CubejsClient, TChartType } from '@cubejs-client/ngx';
-import { ChartDataSets, ChartOptions } from 'chart.js';
+import { ChartDataset, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { Observable } from 'rxjs';
 
@@ -23,7 +23,7 @@ export class QueryRendererComponent implements OnInit {
   displayedColumns: string[] = [];
   tableData: any[] = [];
   columnTitles: string[] = [];
-  chartData: ChartDataSets[] = [];
+  chartData: ChartDataset[] = [];
   chartLabels: Label[] = [];
   chartOptions: ChartOptions = {
     responsive: true,

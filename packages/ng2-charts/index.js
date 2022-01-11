@@ -6,7 +6,8 @@ const {
 class Ng2ChartsTemplate extends TemplatePackage {
   importDependencies() {
     return {
-      'chart.js': '^2.9.4',
+      'chart.js': '3.7.0',
+      'ng2-charts': '3.0.6',
     };
   }
 }

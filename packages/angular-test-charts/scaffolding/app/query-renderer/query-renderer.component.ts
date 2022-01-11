@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CubejsClient } from '@cubejs-client/ngx';
-import { ChartDataSets, ChartOptions } from 'chart.js';
+import { ChartDataset, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { BehaviorSubject } from 'rxjs';
 
@@ -25,7 +25,7 @@ export class QueryRendererComponent {
   displayedColumns: string[] = [];
   tableData: any[] = [];
   columnTitles: string[] = [];
-  chartData: ChartDataSets[] = [];
+  chartData: ChartDataset[] = [];
   chartLabels: Label[] = [];
   chartOptions: ChartOptions = {
     responsive: true,
