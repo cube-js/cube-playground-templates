@@ -40,7 +40,7 @@ const cubejsApi = cubejs(
   { apiUrl: '${apiUrl}' }
 );
 
-const renderChart = ({ resultSet, error, pivotConfig }) => {
+const renderChart = ({ resultSet, error, pivotConfig, onDrilldownRequested }) => {
   if (error) {
     return <div>{error.toString()}</div>;
   }
