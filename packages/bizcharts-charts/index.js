@@ -6,7 +6,6 @@ const {
 class BizchartTemplate extends TemplatePackage {
   importDependencies() {
     return {
-      ...super.importDependencies(),
       bizcharts: '4.1.7',
     };
   }

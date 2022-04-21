@@ -6,7 +6,6 @@ const {
 class D3Template extends TemplatePackage {
   importDependencies() {
     return {
-      ...super.importDependencies(),
       d3: '6.5.0',
     };
   }

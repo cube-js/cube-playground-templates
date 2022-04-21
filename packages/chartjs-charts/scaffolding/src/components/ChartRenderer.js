@@ -29,7 +29,7 @@ const PALE_COLORS_SERIES = [
 ];
 
 const commonOptions = {
-  maintainAspectRatio: true,
+  maintainAspectRatio: false,
   interaction: {
     intersect: false,
   },
