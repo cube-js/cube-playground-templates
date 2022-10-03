@@ -70,10 +70,14 @@ const useDrilldownCallback = ({
   );
 };
 
-const LineChartRenderer = ({ resultSet, onDrilldownRequested }) => {
+const LineChartRenderer = ({
+  resultSet,
+  pivotConfig,
+  onDrilldownRequested,
+}) => {
   const datasets = useDeepCompareMemo(
     () =>
-      resultSet.series().map((s, index) => ({
+      resultSet.series(pivotConfig).map((s, index) => ({
         label: s.title,
         data: s.series.map((r) => r.value),
         yValues: [s.key],
@@ -85,17 +89,18 @@ const LineChartRenderer = ({ resultSet, onDrilldownRequested }) => {
         tickWidth: 1,
         fill: false,
       })),
-    [resultSet]
+    [resultSet, pivotConfig]
   );
 
   const data = {
-    labels: resultSet.categories().map((c) => c.x),
+    labels: resultSet.categories(pivotConfig).map((c) => c.x),
     datasets,
   };
 
   const getElementAtEvent = useDrilldownCallback({
     datasets: data.datasets,
     labels: data.labels,
+    pivotConfig,
     onDrilldownRequested,
   });
 
@@ -112,18 +117,18 @@ const LineChartRenderer = ({ resultSet, onDrilldownRequested }) => {
 const BarChartRenderer = ({ resultSet, pivotConfig, onDrilldownRequested }) => {
   const datasets = useDeepCompareMemo(
     () =>
-      resultSet.series().map((s, index) => ({
+      resultSet.series(pivotConfig).map((s, index) => ({
         label: s.title,
         data: s.series.map((r) => r.value),
         yValues: [s.key],
         backgroundColor: COLORS_SERIES[index],
         fill: false,
       })),
-    [resultSet]
+    [resultSet, pivotConfig]
   );
 
   const data = {
-    labels: resultSet.categories().map((c) => c.x),
+    labels: resultSet.categories(pivotConfig).map((c) => c.x),
     datasets,
   };
 
@@ -160,10 +165,14 @@ const BarChartRenderer = ({ resultSet, pivotConfig, onDrilldownRequested }) => {
   );
 };
 
-const AreaChartRenderer = ({ resultSet, onDrilldownRequested }) => {
+const AreaChartRenderer = ({
+  resultSet,
+  pivotConfig,
+  onDrilldownRequested,
+}) => {
   const datasets = useDeepCompareMemo(
     () =>
-      resultSet.series().map((s, index) => ({
+      resultSet.series(pivotConfig).map((s, index) => ({
         label: s.title,
         data: s.series.map((r) => r.value),
         yValues: [s.key],
@@ -174,11 +183,11 @@ const AreaChartRenderer = ({ resultSet, onDrilldownRequested }) => {
         fill: true,
         tension: 0,
       })),
-    [resultSet]
+    [resultSet, pivotConfig]
   );
 
   const data = {
-    labels: resultSet.categories().map((c) => c.x),
+    labels: resultSet.categories(pivotConfig).map((c) => c.x),
     datasets,
   };
 
@@ -195,6 +204,7 @@ const AreaChartRenderer = ({ resultSet, onDrilldownRequested }) => {
   const getElementAtEvent = useDrilldownCallback({
     datasets: data.datasets,
     labels: data.labels,
+    pivotConfig,
     onDrilldownRequested,
   });
 
@@ -208,10 +218,10 @@ const AreaChartRenderer = ({ resultSet, onDrilldownRequested }) => {
   );
 };
 
-const PieChartRenderer = ({ resultSet, onDrilldownRequested }) => {
+const PieChartRenderer = ({ resultSet, pivotConfig, onDrilldownRequested }) => {
   const data = {
-    labels: resultSet.categories().map((c) => c.x),
-    datasets: resultSet.series().map((s) => ({
+    labels: resultSet.categories(pivotConfig).map((c) => c.x),
+    datasets: resultSet.series(pivotConfig).map((s) => ({
       label: s.title,
       data: s.series.map((r) => r.value),
       yValues: [s.key],
@@ -223,6 +233,7 @@ const PieChartRenderer = ({ resultSet, onDrilldownRequested }) => {
   const getElementAtEvent = useDrilldownCallback({
     datasets: data.datasets,
     labels: data.labels,
+    pivotConfig,
     onDrilldownRequested,
   });
 
@@ -237,10 +248,11 @@ const PieChartRenderer = ({ resultSet, onDrilldownRequested }) => {
 };
 
 const TypeToChartComponent = {
-  line: ({ resultSet, onDrilldownRequested }) => {
+  line: ({ resultSet, pivotConfig, onDrilldownRequested }) => {
     return (
       <LineChartRenderer
         resultSet={resultSet}
+        pivotConfig={pivotConfig}
         onDrilldownRequested={onDrilldownRequested}
       />
     );
@@ -254,18 +266,20 @@ const TypeToChartComponent = {
       />
     );
   },
-  area: ({ resultSet, onDrilldownRequested }) => {
+  area: ({ resultSet, pivotConfig, onDrilldownRequested }) => {
     return (
       <AreaChartRenderer
         resultSet={resultSet}
+        pivotConfig={pivotConfig}
         onDrilldownRequested={onDrilldownRequested}
       />
     );
   },
-  pie: ({ resultSet, onDrilldownRequested }) => {
+  pie: ({ resultSet, pivotConfig, onDrilldownRequested }) => {
     return (
       <PieChartRenderer
         resultSet={resultSet}
+        pivotConfig={pivotConfig}
         onDrilldownRequested={onDrilldownRequested}
       />
     );

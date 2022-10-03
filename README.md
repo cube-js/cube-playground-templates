@@ -4,7 +4,7 @@
 
 # Cube.js Playground Templates
 
-This repository contains the templates used by the Cube.js Playground to scaffold various Dashboard Apps.
+This repository contains the templates used by the Cube Playground to scaffold various Dashboard Apps.
 
 ## Contributing
 
@@ -48,7 +48,7 @@ For example:
 
 ### Templates
 
-Each template contains the comprehensive information required for template installation. The following fields `name`, `description` and `coverUrl` will be used to display the template in the Cube.js Playground on the [Dashboard App](https://cube.dev/docs/dashboard-app) page.
+Each template contains the comprehensive information required for template installation. The following fields `name`, `description` and `coverUrl` will be used to display the template in the Cube Playground on the [Dashboard App](https://cube.dev/docs/dashboard-app) page.
 
 The `templatePackages` field describes all the packages the template consists of. During template installation, all packages defined in `templatePackages` will be downloaded and resolved accordingly.
 
