@@ -14,7 +14,7 @@ const commonDependencies = [
   'react-dom',
   '@cubejs-client/core',
   '@cubejs-client/react',
-  'antd',
+  ['antd', '4.16.13'],
 ];
 
 export function getCodesandboxFiles(
